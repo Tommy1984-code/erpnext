@@ -1,0 +1,326 @@
+{% if data.length %}
+
+  <script src="https://cdn.tailwindcss.com"></script>
+ 
+<!-- HEADER SECTION -->
+<div class="bg-white text-sm">
+    <div class="flex w-full border border-black h-32 items-center">
+
+        <!-- Left Logo -->
+        <div class="border-r border-black flex items-center justify-center w-1/6 h-full p-2">
+            <img src="/private/files/Emblem_of_Ethiopia.svg" class="h-full max-h-24 object-contain">
+        </div>
+
+        <!-- Federal Government Text -->
+        <div class="border-r border-black p-2 text-center flex flex-col justify-center w-2/5 h-full">
+            <div class="text-xl font-semibold leading-tight">ኢትዮጵያ ፌዴራላዊ ዴሞክራሲያዊ ሪፐብሊክ</div>
+            <div class="text-xl font-semibold leading-tight">የኢትዮጵያ ገቢዎችና ጉምሩክ ባለስልጣን</div>
+        </div>
+
+        <!-- Pension Form Title -->
+        <div class="border-r border-black p-2 text-center flex flex-col justify-center w-2/5 h-full">
+            <div class="text-base font-semibold leading-snug">የሠራተኛ የጡረታ ተያያዥ ክፍያ መጠየቂያ ማስረጃ</div>
+            <div class="text-base font-medium leading-snug">የግል ድርጅት ሠራተኞች የጡረታ መዋጮ ማሳወቂያ ቅፅ</div>
+            <div class="text-xs leading-snug">(የግል ድርጅቶች ሠራተኞች ጡረታ አዋጅ ቁጥር 715/2003)</div>
+        </div>
+
+        <!-- Right Logo -->
+        <div class="flex items-center justify-center w-1/6 h-full p-2">
+            <img src="/private/files/addis ababa transparent logo.png" class="h-full max-h-24 object-contain">
+        </div>
+
+    </div>
+</div>
+
+<h1 style="text-align:center; margin-top: 20px; margin-bottom: 10px;">Details of the organization paying the pension contributions</h1>
+
+<table class="main-table">
+    <tr>
+        <th>Name of Organization</th>
+        <th>Organization TIN number</th>
+        <th>Tax Account Number</th>
+        <th>Period For Payment</th>
+        <th colspan="2">Page List</th>
+    </tr>
+    <tr>
+        <td>{{ data[0].company_name }}</td>
+        <td>{{ data[0].organization_tin_number }}</td>
+        <td>{{ data[0].tax_account_number }}</td>
+        <td>{{data[0].period_for_payment}}</td>
+        <td colspan="2">Page 1 of 8</td>
+    </tr>
+    <tr>
+        <th>2.a Region</th>
+        <th colspan="2">2.b Zone/Sub-district</th>
+        <th colspan="2">5 Name of the Tax Collector</th>
+        <th>Document No (for office use)</th>
+    </tr>
+    <tr>
+        <td>{{ data[0].region }}</td>
+        <td colspan ="2">{{ data[0].zonesub_district }}</td>
+        <td colspan="2">{{ data[0].name_of_the_tax_collector }}</td>
+        <td>{{ data[0].document_number_for_office_use_only }}</td>
+    </tr>
+    <tr>
+        <th>2.c Woreda</th>
+        <th>2.d Kebele/Farmers' Association</th>
+        <th>2.e House Number</th>
+        <th>6 Phone NO</th>
+        <th>7 Fax No</th>
+        <th></th>
+    </tr>
+    <tr>
+        <td>{{ data[0].woreda }}</td>
+        <td>{{ data[0].kebele }}</td>
+        <td>{{ data[0].house_number }}</td>
+        <td>{{ data[0].phone }}</td>
+        <td>{{ data[0].fax }}</td>
+        <td></td>
+        
+    </tr>
+</table>
+
+
+
+<!-- TABLE STYLING -->
+<style>
+     .main-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    .main-table th, .main-table td {
+        padding: 8px;
+        text-align: center;
+        border: 1px solid #ccc;
+    }
+    .main-table th {
+        background-color: #f2f2f2;
+    }
+    .main-table td {
+        background-color: #fff;
+    }
+    .main-table td[colspan="2"], .main-table th[colspan="2"] {
+        text-align: left;
+    }
+    .pension-table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 12px;
+        margin-top: 20px;
+    }
+    .pension-table th, .pension-table td {
+        border: 1px solid #000;
+        padding: 6px;
+        text-align: left;
+    }
+    .pension-table th {
+        background-color: #f2f2f2;
+    }
+</style>
+
+<!-- REPORT TITLE -->
+<h3 style="text-align:center; margin-top: 20px;">Employee Pension Contribution List</h3>
+
+<!-- REPORT TABLE -->
+<table class="pension-table">
+    <thead>
+        <tr>
+            <th>No</th>
+            <th>Full Name</th>
+            <th>TIN Number</th>
+            <th>Date of Hire (G.C)</th>
+            <th>Basic Salary</th>
+            <th>Employee Pension (7%)</th>
+            <th>Company Pension (11%)</th>
+            <th>Total Pension (18%)</th>
+            <th>Signature</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% 
+            var total_basic_salary = 0;
+            var total_employee_pension = 0;
+            var total_company_pension = 0;
+            var total_combined_pension = 0;
+        
+            for(var i=0; i<data.length; i++) { 
+                total_basic_salary += data[i].basic_salary || 0;
+                total_employee_pension += data[i].employee_pension || 0;
+                total_company_pension += data[i].company_pension || 0;
+                total_combined_pension += data[i].total_pension || 0;
+        %}
+        <tr>
+            <td>{{ i + 1 }}</td>
+            <td>{{ data[i].employee_name }}</td>
+            <td>{{ data[i].tin_number }}</td>
+            <td>{{ frappe.datetime.str_to_user(data[i].date_of_hire) }}</td>
+            <td>{{ format_currency(data[i].basic_salary) }}</td>
+            <td>{{ format_currency(data[i].employee_pension) }}</td>
+            <td>{{ format_currency(data[i].company_pension) }}</td>
+            <td>{{ format_currency(data[i].total_pension) }}</td>
+            <td>{{ data[i].signature }}</td>
+        </tr>
+        {% } %}
+    </tbody>
+    <tfoot>
+        <!-- Spacer row to add visual gap -->
+        <tr>
+            <td colspan="9" style="height: 5px; border: none;"></td>
+        </tr>
+        <!-- Total row with style -->
+        <tr style="background-color: #f1f1f1; border-top: 2px solid #131111;">
+            <th colspan="4" style="text-align: right; padding: 10px 0;">Total:</th>
+            <th style="padding: 10px 0;">{{ format_currency(total_basic_salary) }}</th>
+            <th style="padding: 10px 0;">{{ format_currency(total_employee_pension) }}</th>
+            <th style="padding: 10px 0;">{{ format_currency(total_company_pension) }}</th>
+            <th style="padding: 10px 0;">{{ format_currency(total_combined_pension) }}</th>
+            <th></th>
+        </tr>
+    </tfoot>
+    
+</table>
+<div style="display: flex; justify-content: space-between; margin-top: 50px; gap: 20px;">
+    <!-- Left: Summary Table (Label and Data Side by Side) -->
+    <div style="width: 30%;">
+        <table style="width: 100%; border-collapse: collapse; border: 1px solid #ddd;">
+            <thead>
+                <tr>
+                    <th colspan="2" style="text-align: center; padding: 10px; background-color: #f1f1f1; border: 1px solid #ddd;">
+                        የወሩ የተጠቃለለ ሂሳብ
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="padding: 8px; border: 1px solid #ddd;"><strong>Total Employees</strong></td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">{{ data.length }}</td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px; border: 1px solid #ddd;"><strong>Total Basic Salary</strong></td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">{{ format_currency(total_basic_salary) }}</td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px; border: 1px solid #ddd;"><strong>Total Employee Pension</strong></td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">{{ format_currency(total_employee_pension) }}</td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px; border: 1px solid #ddd;"><strong>Total Company Pension</strong></td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">{{ format_currency(total_company_pension) }}</td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px; border: 1px solid #ddd;"><strong>Total Pension</strong></td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">{{ format_currency(total_combined_pension) }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Center: See Attached Message -->
+    <div style="width: 30%; text-align: center; align-self: top;">
+        <h3 style="font-size: 16px; border-bottom: 1px solid #ccc; padding-bottom: 5px;">Employee Leaving This Month</h3>
+        <p style="margin-top: 30px; font-style: italic; color: #444;">See the attached file.</p>
+    </div>
+
+    <!-- Right: Bureau Section -->
+    <div style="width: 35%;">
+        <table style="width: 100%; border-collapse: collapse; border: 1px solid #ddd;">
+            <thead>
+                <tr>
+                    <th colspan="2" style="text-align: center; padding: 10px; background-color: #f1f1f1; border: 1px solid #ddd;">
+                        For Bureau Service Only
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="padding: 8px; border: 1px solid #ddd;width: 50%;">Paid Day</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;width: 50%;"></td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px; border: 1px solid #ddd;width: 50%;">Receipt No</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;width: 50%;"></td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px; border: 1px solid #ddd;width: 50%;">Paid Amount</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;width: 50%;"></td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px; border: 1px solid #ddd;width: 50%;">Check Number</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;width: 50%;"></td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px; border: 1px solid #ddd;width: 50%;">Cashier Name</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;width: 50%;"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div style="margin-top: 10px; font-size: 12px; padding-top: 10px;">
+    <!-- Acknowledgment Text Box -->
+   <!-- Four Column Table (based on scanned document) -->
+  <!-- Title -->
+<div style="text-align: center; font-weight: bold; font-size: 14px; margin-top: 5px;">
+    ክፍል5.የትክክለኛነት ማረጋገጫ
+</div>
+<table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+    <tr>
+        <!-- Column 1: Amharic Paragraph (Reduced width) -->
+        <td style="width: 35%; border: 1px solid black; padding: 10px;">
+            በላይ የተገለጸው ማስታወቂያና የተሰጠው መረጃ በሙሉ የተሞላና ትክክለኛ መሆኑን አረጋግጣለው። ትክክለኛ ያልሆነ መረጃ ማቅረብ በግብር ህጎችም ሆነ 
+            በወንጀለኛ መቅጫ ህግ የሚያስቀጣ መሆኑን እገነዘባለው።
+        </td>
+
+        <!-- Column 2: Taxpayer Info -->
+        <td style="width: 25%; border: 1px solid black; padding: 6px; font-size: 14px; line-height: 1.4;">
+            የግብር ከፋይ/ህጋዊ ወኪሉ<br>
+            <span style="display: block;">ስም፡ <span style="display: inline-block; border-bottom: 1px solid black; width: 100px;"></span></span>
+            <span style="display: block; white-space: nowrap;">
+                ፊርማ፡ <span style="display: inline-block; border-bottom: 1px solid black; width: 100px;"></span>
+                ቀን፡ <span style="display: inline-block; border-bottom: 1px solid black; width: 100px;"></span>
+            </span>
+        </td>
+
+        <!-- Column 3: Stamp (Centered) -->
+        <td style="width: 15%; border: 1px solid black; padding: 10px; text-align: center; vertical-align: middle;">
+            ማህተም
+        </td>
+
+        <!-- Column 4: Authority Info -->
+        <td style="width: 25%; border: 1px solid black; padding: 6px; font-size: 14px; line-height: 1.4;">
+            <span style="display: block;">የግብር ባለስልጣን ስም፡ <span style="display: inline-block; border-bottom: 1px solid black; width: 100px;"></span></span>
+            <span style="display: block;">ፊርማ፡ <span style="display: inline-block; border-bottom: 1px solid black; width: 100px;"></span></span>
+            <span style="display: block;">ቀን፡ <span style="display: inline-block; border-bottom: 1px solid black; width: 100px;"></span></span>
+        </td>
+    </tr>
+</table>
+
+
+</div>
+
+<div style="margin-top: 30px; font-size: 12px; padding-top: 15px;">
+    <!-- Acknowledgment Text -->
+   
+    <!-- Footer Section -->
+    <div style="display: flex; justify-content: space-between;">
+        <div style="width: 33%;">
+            <strong>Name of Payer:</strong> ___________________________<br>
+            <strong>የድርጅቱ ከፋይ/ሕጋዊ ወኪል ስም</strong>
+        </div>
+        <div style="width: 33%;">
+            <strong>Signature:</strong> ___________________________<br>
+            <strong>ፊርማ</strong>
+        </div>
+        <div style="width: 33%;">
+            <strong>Date:</strong> ___________________________<br>
+            <strong>ቀን</strong>
+        </div>
+    </div>
+</div>
+
+</div>
+
+{% else %}
+<p>No data available for the selected filters.</p>
+{% endif %}
