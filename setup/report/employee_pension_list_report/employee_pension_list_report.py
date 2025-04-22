@@ -76,6 +76,7 @@ def get_data(filters=None):
                 e.employee_tin_no,
                 e.date_of_joining,
                 ss.name AS salary_slip,
+                ss.end_date,
                 sd.amount AS basic_salary
             FROM `tabSalary Slip` ss
             JOIN `tabEmployee` e ON ss.employee = e.name
@@ -96,8 +97,21 @@ def get_data(filters=None):
             conditions["company"] = company
 
         results = frappe.db.sql(query, conditions, as_dict=True)
+        employee_latest_slip = {}
 
         for row in results:
+            employee_id = row.employee_id  # Use employee_id to track unique employees
+            
+            # If this employee is not in the dictionary or has a later end_date, store/update the entry
+            if employee_id not in employee_latest_slip:
+                employee_latest_slip[employee_id] = row
+            else:
+                existing_row = employee_latest_slip[employee_id]
+                if row.end_date > existing_row['end_date']:  # Compare end_date to get the latest
+                    employee_latest_slip[employee_id] = row
+
+        # Now process the latest salary slip for each employee
+        for employee_id, row in employee_latest_slip.items():
             base_salary = row.basic_salary
             employee_pension = base_salary * 0.07
             company_pension = base_salary * 0.11
