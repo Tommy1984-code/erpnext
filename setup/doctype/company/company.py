@@ -27,12 +27,14 @@ class Company(NestedSet):
 	if TYPE_CHECKING:
 		from frappe.types import DF
 
-		abbr: DF.Data
+		abbr: DF.Data | None
 		accumulated_depreciation_account: DF.Link | None
 		allow_account_creation_against_child_company: DF.Check
 		asset_received_but_not_billed: DF.Link | None
 		auto_err_frequency: DF.Literal["Daily", "Weekly", "Monthly"]
 		auto_exchange_rate_revaluation: DF.Check
+		bank_ac_no: DF.Data | None
+		bank_name: DF.Link | None
 		book_advance_payments_in_separate_party_account: DF.Check
 		capital_work_in_progress_account: DF.Link | None
 		chart_of_accounts: DF.Literal[None]

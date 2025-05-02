@@ -76,7 +76,7 @@ def get_data(filters=None):
                 e.employee_tin_no,
                 e.date_of_joining,
                 ss.name AS salary_slip,
-                ss.end_date,
+                ss.end_date,               
                 sd.amount AS basic_salary
             FROM `tabSalary Slip` ss
             JOIN `tabEmployee` e ON ss.employee = e.name
