@@ -25,63 +25,79 @@
 {% var currentDept = ""; %}
 {% var rowNo = 1; %}
 {% var deptEmployeeCount = 0; %}
+{% var total_employee_count = 0; %}
 {% var isFirstDept = true; %}
 
-<!-- Loop through the data and group by department -->
-{% for (var i = 0; i < data.length; i++) { %}
-  {% var row = data[i]; %}
-
-  <!-- Skip empty or unwanted departments -->
-  {% if (row.section && row.section !== "account" && !row.section.startsWith("▶")) { %}
-    {% if (row.section !== currentDept) { %}
-      {% if (!isFirstDept) { %}
-        </table>
-        <div class="text-right font-bold">Total Employees: {{ deptEmployeeCount }}</div>
-      {% } %}
-      
-      <!-- Start new table for this department -->
-      <h3 class="text-xl font-bold mb-4">{{ row.section }}</h3>
-      <table class="table-auto w-full border-collapse border border-gray-300 mb-4">
-        <thead>
-          <tr class="bg-gray-100">
-            <th class="border border-gray-300 px-2 py-1">No.</th>
-            <th class="border border-gray-300 px-2 py-1">Employee ID</th>
-            <th class="border border-gray-300 px-2 py-1">Full Name</th>
-            <th class="border border-gray-300 px-2 py-1">Sex</th>
-            <th class="border border-gray-300 px-2 py-1">Job Title</th>
-            <th class="border border-gray-300 px-2 py-1">Date of Hire (G.C)</th>
-            <th class="border border-gray-300 px-2 py-1">Date of Birth</th>
-            <th class="border border-gray-300 px-2 py-1">Section</th>
-            <th class="border border-gray-300 px-2 py-1">Grade</th>
-          </tr>
-        </thead>
-        <tbody>
-      {% var currentDept = row.section; %}
-      {% var deptEmployeeCount = 0; %}
-      {% var isFirstDept = false; %}
-    {% } %}
-
-    <!-- Employee row -->
-    <tr>
-      <td class="border border-gray-300 px-2 py-1 text-center">{{ rowNo }}</td>
-      <td class="border border-gray-300 px-2 py-1">{{ row.employee_id }}</td>
-      <td class="border border-gray-300 px-2 py-1">{{ row.employee_name }}</td>
-      <td class="border border-gray-300 px-2 py-1">{{ row.gender }}</td>
-      <td class="border border-gray-300 px-2 py-1">{{ row.designation }}</td>
-      <td class="border border-gray-300 px-2 py-1">{{ row.date_of_hire }}</td>
-      <td class="border border-gray-300 px-2 py-1">{{ row.date_of_birth }}</td>
-      <td class="border border-gray-300 px-2 py-1">{{ row.section }}</td>
-      <td class="border border-gray-300 px-2 py-1">{{ row.grade }}</td>
+<!-- Start the table and header -->
+<table class="table-auto w-full border-collapse mb-4">
+  <thead>
+    <tr class="bg-gray-100">
+      <th class="border border-gray-300 px-2 py-1">No.</th>
+      <th class="border border-gray-300 px-2 py-1">Employee ID</th>
+      <th class="border border-gray-300 px-2 py-1">Full Name</th>
+      <th class="border border-gray-300 px-2 py-1">Sex</th>
+      <th class="border border-gray-300 px-2 py-1">Job Title</th>
+      <th class="border border-gray-300 px-2 py-1">Date of Hire (G.C)</th>
+      <th class="border border-gray-300 px-2 py-1">Date of Birth</th>
+      <th class="border border-gray-300 px-2 py-1">Section</th>
+      <th class="border border-gray-300 px-2 py-1">Grade</th>
     </tr>
+  </thead>
+  <tbody>
+    <!-- Loop through the data and group by department -->
+    {% for (var i = 0; i < data.length; i++) { %}
+      {% var row = data[i]; %}
 
-    {% var rowNo = rowNo + 1; %}
-    {% var deptEmployeeCount = deptEmployeeCount + 1; %}
-  {% } %}
-{% } %}
+      <!-- Skip empty or unwanted departments -->
+      {% if (row.section && row.section !== "account" && !row.section.startsWith("▶")) { %}
+        {% if (row.section !== currentDept) { %}
+          {% if (!isFirstDept) { %}
+            <!-- Add total employees for the previous department -->
+            <tr class="bg-gray-200">
+              <td colspan="9" class="px-2 py-1 text-right font-bold">Total Employees: {{ deptEmployeeCount }}</td>
+            </tr>
+            {% total_employee_count += deptEmployeeCount; %}
+          {% } %}
+          
+          <!-- Department change: Insert a row for the department inside the table -->
+          <tr>
+            <td colspan="9" class="px-2 py-1 text-left font-bold">{{ row.section }}</td>
+          </tr>
+          
+          {% var currentDept = row.section; %}
+          {% var deptEmployeeCount = 0; %}
+          {% var isFirstDept = false; %}
+        {% } %}
 
-<!-- Add total employees after the last department -->
-{% if (deptEmployeeCount > 0) { %}
+        <!-- Employee row -->
+        <tr>
+          <td class="px-2 py-1 text-center">{{ rowNo }}</td>
+          <td class="px-2 py-1">{{ row.employee_id }}</td>
+          <td class="px-2 py-1">{{ row.employee_name }}</td>
+          <td class="px-2 py-1">{{ row.gender }}</td>
+          <td class="px-2 py-1">{{ row.designation }}</td>
+          <td class="px-2 py-1">{{ row.date_of_hire }}</td>
+          <td class="px-2 py-1">{{ row.date_of_birth }}</td>
+          <td class="px-2 py-1">{{ row.section }}</td>
+          <td class="px-2 py-1">{{ row.grade }}</td>
+        </tr>
+
+        {% var rowNo = rowNo + 1; %}
+        {% var deptEmployeeCount = deptEmployeeCount + 1; %}
+      {% } %}
+    {% } %}
+    
+    <!-- Add total employees after the last department -->
+    {% if (deptEmployeeCount > 0) { %}
+      <tr class="bg-gray-200">
+        <td colspan="9" class="text-right font-bold">Total Employees: {{ deptEmployeeCount }}</td>
+      </tr>
+    {% total_employee_count += deptEmployeeCount; %}
+    {% } %}
+    
+    <!-- Add grand total employees row -->
+    <tr class="bg-gray-300">
+      <td colspan="9" class="px-2 py-1 text-right font-bold">Grand Total Employees: {{ total_employee_count }}</td>
+    </tr>
   </tbody>
-  </table>
-  <div class="text-right font-bold">Total Employees: {{ deptEmployeeCount }}</div>
-{% } %}
+</table>

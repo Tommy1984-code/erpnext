@@ -41,6 +41,7 @@
   "reports_to",
   "column_break_18",
   "branch",
+  "branch_region",
   "grade",
   "employment_details",
   "job_applicant",
@@ -407,8 +408,6 @@
    "fieldname": "branch",
    "fieldtype": "Link",
    "label": "Branch",
-   "oldfieldname": "branch",
-   "oldfieldtype": "Link",
    "options": "Branch"
   },
   {
@@ -987,6 +986,14 @@
    "fieldtype": "Select",
    "label": "Tax Free Transportation Amount",
    "options": "All Tax\n600\n2200"
+  },
+  {
+   "fetch_from": "branch.branch_region",
+   "fieldname": "branch_region",
+   "fieldtype": "Read Only",
+   "in_global_search": 1,
+   "in_list_view": 1,
+   "label": "Branch Region"
   }
  ],
  "icon": "fa fa-user",
@@ -994,7 +1001,7 @@
  "image_field": "image",
  "is_tree": 1,
  "links": [],
- "modified": "2025-03-25 12:52:58.323014",
+ "modified": "2025-05-07 12:30:10.736844",
  "modified_by": "Administrator",
  "module": "Setup",
  "name": "Employee",
