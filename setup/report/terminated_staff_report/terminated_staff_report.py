@@ -31,17 +31,29 @@ def get_columns():
 		
 	]
 
-
 def get_data(filters=None):
+    filters = filters or {}
     from_date = getdate(filters.get("from_date"))
     to_date = getdate(filters.get("to_date"))
     company = filters.get("company")
+    employee = filters.get("employee")
+    grade = filters.get("grade")
+    department = filters.get("department")
+    employee_type = filters.get("employee_type")
+    branch = filters.get("branch")
 
     if not (from_date and to_date):
         frappe.throw("Please set both From Date and To Date")
 
-    # Step 1: Get left employees and their last salary slip
-    employees = frappe.db.sql("""
+    # Prepare dynamic filter clauses
+    company_clause = "AND e.company = %(company)s" if company else ""
+    employee_clause = "AND e.name = %(employee)s" if employee else ""
+    department_clause = "AND e.department = %(department)s" if department else ""
+    grade_clause = "AND e.grade = %(grade)s" if grade else ""
+    employee_type_clause = "AND e.employment_type = %(employee_type)s" if employee_type else ""
+    branch_clause = "AND e.branch = %(branch)s" if branch else ""
+
+    query = f"""
         SELECT e.name AS employee_id,
                e.employee_name,
                e.gender,
@@ -59,19 +71,41 @@ def get_data(filters=None):
         WHERE e.status = 'Left'
           AND e.relieving_date BETWEEN %(from_date)s AND %(to_date)s
           {company_clause}
+          {employee_clause}
+          {department_clause}
+          {grade_clause}
+          {employee_type_clause}
+          {branch_clause}
         ORDER BY e.relieving_date ASC
-    """.format(company_clause="AND e.company = %(company)s" if company else ""), {
+    """
+
+    params = {
         "from_date": from_date,
         "to_date": to_date,
-        "company": company
-    }, as_dict=True)
+    }
+
+    # Add filter params only if they are used in the query
+    if company:
+        params["company"] = company
+    if employee:
+        params["employee"] = employee
+    if department:
+        params["department"] = department
+    if grade:
+        params["grade"] = grade
+    if employee_type:
+        params["employee_type"] = employee_type
+    if branch:
+        params["branch"] = branch
+
+    employees = frappe.db.sql(query, params, as_dict=True)
 
     result = []
     for emp in employees:
         termination_salary = 0
 
         if emp.salary_slip:
-            # Step 2: Get salary details from the slip
+            # Get salary details from the slip
             salary_details = frappe.db.sql("""
                 SELECT sd.amount, sd.abbr, sd.parentfield
                 FROM `tabSalary Detail` sd
@@ -84,14 +118,12 @@ def get_data(filters=None):
                 if comp.parentfield == 'earnings'
             }
 
-            # Step 3: Get 'B' or fallback to 'VB'
             termination_salary = earnings.get('B') or earnings.get('VB') or 0
 
         emp['termination_salary'] = termination_salary
         result.append(emp)
 
     return result
-
 
 def get_months_in_range(start_date, end_date):
 	start = getdate(start_date)

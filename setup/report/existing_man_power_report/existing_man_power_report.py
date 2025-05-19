@@ -29,59 +29,92 @@ def get_columns():
 
 
 def get_data(filters=None):
-	company = filters.get("company")
+    filters = filters or {}
+    from_date = getdate(filters.get("from_date"))
+    to_date = getdate(filters.get("to_date"))
+    company = filters.get("company")
 
-	# Fetch all active employees with department
-	employees = frappe.get_all(
-		"Employee",
-		filters={
-			"company": company,
-			"status": "Active"
-		},
-		fields=[
-			"name as employee_id",
-			"employee_name",
-			"gender",
-			"designation",
-			"date_of_joining as date_of_hire",
-			"date_of_birth",
-			"department",
-			"grade"
-		],
-		order_by="department asc, employee_name asc"
-	)
+    # Build employee filters dictionary
+    employee_filters = {
+		# "from_date" : from_date,
+		# "to_date" : to_date,
+        "company": company,
+        "status": "Active"
+    }
 
-	data = []
-	current_department = None
+    # Add optional filters if provided
+    if filters.get("employee"):
+         employee_filters["employee"] = filters.get("employee")
+    if filters.get("department"):
+        employee_filters["department"] = filters.get("department")
+    if filters.get("grade"):
+        employee_filters["grade"] = filters.get("grade")
+    if filters.get("employee_type"):
+        employee_filters["employment_type"] = filters.get("employee_type")
+    if filters.get("designation"):
+        employee_filters["designation"] = filters.get("designation")
+    if filters.get("branch"):
+         employee_filters["branch"] = filters.get("branch")
 
-	for emp in employees:
-		department = emp.department or "No Department"
-		
-		# Check if we are entering a new department group
-		if department != current_department:
-			# Add a group title row
-			data.append({
-				"employee_id": f"▶ {department}",
-				"employee_name": "",
-				"gender": "",
-				"designation": "",
-				"date_of_hire": "",
-				"date_of_birth": "",
-				"section": "",
-				"grade": ""
-			})
-			current_department = department
+    # Fetch all active employees with department & applied filters
+    employees = frappe.get_all(
+        "Employee",
+        filters=employee_filters,
+        fields=[
+            "name as employee_id",
+            "employee_name",
+            "gender",
+            "designation",
+            "date_of_joining as date_of_hire",
+            "date_of_birth",
+            "department",
+            "grade",
+            "employment_type"
+        ],
+        order_by="department asc, employee_name asc"
+    )
 
-		# Add employee row
-		data.append({
-			"employee_id": emp.employee_id,
-			"employee_name": emp.employee_name,
-			"gender": emp.gender,
-			"designation": emp.designation,
-			"date_of_hire": emp.date_of_hire,
-			"date_of_birth": emp.date_of_birth,
-			"section": emp.department,  
-			"grade": emp.grade
-		})
+    data = []
+    current_department = None
 
-	return data
+    for emp in employees:
+        department = emp.department or "No Department"
+        
+        # Add department header row if new department
+        if department != current_department:
+            data.append({
+                "employee_id": f"▶ {department}",
+                "employee_name": "",
+                "gender": "",
+                "designation": "",
+                "date_of_hire": "",
+                "date_of_birth": "",
+                "section": "",
+                "grade": ""
+            })
+            current_department = department
+
+        # Add employee row
+        data.append({
+            "employee_id": emp.employee_id,
+            "employee_name": emp.employee_name,
+            "gender": emp.gender,
+            "designation": emp.designation,
+            "date_of_hire": emp.date_of_hire,
+            "date_of_birth": emp.date_of_birth,
+            "section": emp.department,
+            "grade": emp.grade
+        })
+
+    return data
+
+
+def get_months_in_range(start_date, end_date):
+	start = getdate(start_date)
+	end = getdate(end_date)
+
+	months = []
+	while start <= end:
+		months.append(start)
+		start = add_months(start, 1)
+	return months
