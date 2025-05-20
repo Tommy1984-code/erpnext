@@ -58,6 +58,10 @@ def get_data(filters=None):
     from_date = filters.get("from_date")
     to_date = filters.get("to_date")
     company = filters.get("company")
+    employee = filters.get("employee")
+    department = filters.get("department")
+    grade = filters.get("grade")
+    branch = filters.get("branch")
 
     if not (from_date and to_date):
         frappe.throw("Please set both From Date and To Date")
@@ -75,6 +79,8 @@ def get_data(filters=None):
                 e.employee_name,
                 e.employee_tin_no,
                 e.date_of_joining,
+                e.department,
+                e.grade,
                 ss.name AS salary_slip,
                 ss.end_date,               
                 sd.amount AS basic_salary
@@ -95,6 +101,21 @@ def get_data(filters=None):
         if company:
             query += " AND e.company = %(company)s"
             conditions["company"] = company
+        if employee:
+            query += "AND e.employee =%(employee)s"
+            conditions["employee"] = employee
+
+        if department:
+            query += " AND e.department = %(department)s"
+            conditions["department"] = department
+
+        if grade:
+            query += " AND e.grade = %(grade)s"
+            conditions["grade"] = grade
+
+        if branch:
+            query += "AND e.branch = %(branch)s"
+            conditions["branch"] = branch
 
         results = frappe.db.sql(query, conditions, as_dict=True)
         employee_latest_slip = {}
