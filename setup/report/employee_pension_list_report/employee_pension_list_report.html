@@ -19,9 +19,9 @@
 
         <!-- Pension Form Title -->
         <div class="border-r border-black p-2 text-center flex flex-col justify-center w-2/5 h-full">
-            <div class="text-base font-semibold leading-snug">የሠራተኛ የጡረታ ተያያዥ ክፍያ መጠየቂያ ማስረጃ</div>
-            <div class="text-base font-medium leading-snug">የግል ድርጅት ሠራተኞች የጡረታ መዋጮ ማሳወቂያ ቅፅ</div>
-            <div class="text-xs leading-snug">(የግል ድርጅቶች ሠራተኞች ጡረታ አዋጅ ቁጥር 715/2003)</div>
+            <div class="text-base font-semibold leading-snug">የግል ድርጅት ሠራተኞች የጡረታ መዋጮ ማሳወቂያ ቅፅ</div>
+            <div class="text-base font-medium leading-snug">(የግል ድርጅቶች ሠራተኞች ጡረታ አዋጅ ቁጥር 715/2003)</div>
+            <div class="text-xs leading-snug">ቅፅ ቁጥር2/2003 የተጨማሪ ማስታወቂያ ቅፅ </div>
         </div>
 
         <!-- Right Logo -->
@@ -32,14 +32,26 @@
     </div>
 </div>
 
-<h1 style="text-align:center; margin-top: 20px; margin-bottom: 10px;">Details of the organization paying the pension contributions</h1>
+<h1 style="text-align:center; margin-top: 20px; margin-bottom: 10px;">ክፍል 1.የጡረታ መዋጮውን የሚከፍለው ድርጅት ዝርዝር መረጃ</h1>
 
 <table class="main-table">
     <tr>
-        <th>Name of Organization</th>
-        <th>Organization TIN number</th>
-        <th>Tax Account Number</th>
-        <th>Period For Payment</th>
+        <th>
+            <div>Name of Organization</div>
+            <div style="font-size: 1em; color: #555;">የድርጅቱ ስም</div>    
+        </th>
+        <th>
+            <div>Organization TIN number</div> 
+            <div style="font-size: 1em; color: #555;">የድርጅቱ የግብር ከፋይ መለያ ቁጥር</div>
+        </th>
+        <th>
+            <div>Tax Account Number</div>
+            <div style="font-size: 1em; color: #555;">የግብር ሂሳብ ቁጥር</div>
+        </th>
+        <th>
+            <div>Period For Payment</div>
+            <div style="font-size: 1em; color: #555;">የክፍያ ጊዜ</div>
+        </th>
         <th colspan="2">Page List</th>
     </tr>
     <tr>
@@ -50,10 +62,10 @@
         <td colspan="2">Page 1 of 8</td>
     </tr>
     <tr>
-        <th>2.a Region</th>
-        <th colspan="2">2.b Zone/Sub-district</th>
-        <th colspan="2">5 Name of the Tax Collector</th>
-        <th>Document No (for office use)</th>
+        <th>2.a ክልል</th>
+        <th colspan="2">2.b ዞን/ክፍለ ከተማ</th>
+        <th colspan="2">5 የግብር ሰብሳቢ ቢሮ ስም</th>
+        <th>የሰነድ ቁጥር (ለቢሮ አገልግሎት ብቻ)</th>
     </tr>
     <tr>
         <td>{{ data[0].region }}</td>
@@ -62,11 +74,11 @@
         <td>{{ data[0].document_number_for_office_use_only }}</td>
     </tr>
     <tr>
-        <th>2.c Woreda</th>
-        <th>2.d Kebele/Farmers' Association</th>
-        <th>2.e House Number</th>
-        <th>6 Phone NO</th>
-        <th>7 Fax No</th>
+        <th>2.c ወረዳ</th>
+        <th>2.d የቀበሌ/ገበሬዎች ማህበር</th>
+        <th>2.e የቤት ቁጥር</th>
+        <th>6 ስልክ ቁጥር</th>
+        <th>7 ፋክስ ቁጥር</th>
         <th></th>
     </tr>
     <tr>
@@ -119,7 +131,7 @@
 </style>
 
 <!-- REPORT TITLE -->
-<h3 style="text-align:center; margin-top: 20px;">Employee Pension Contribution List</h3>
+<h3 style="text-align:center; margin-top: 20px;">የሰራተኛ ጡረታ መዋጮ ዝርዝር</h3>
 
 <!-- REPORT TABLE -->
 <table class="pension-table">
