@@ -30,11 +30,17 @@ class Employee(NestedSet):
 	def autoname(self):
 		set_name_by_naming_series(self)
 		self.employee = self.name
+	# adding for the data import for protecting the exsting recodrd
+	def before_save(self):
+		if frappe.flags.in_import:
+			self.merge_salary_details()
+		
 	def before_validate(self):
 		self.sanitize_condition_and_formula_fields()
 
 	def before_update_after_submit(self):
 		self.sanitize_condition_and_formula_fields()
+	
 
 	def validate(self):
 		from erpnext.controllers.status_updater import validate_status
@@ -264,6 +270,48 @@ class Employee(NestedSet):
 		if cell_number != prev_number or self.get("user_id") != prev_doc.get("user_id"):
 			frappe.cache().hdel("employees_with_number", cell_number)
 			frappe.cache().hdel("employees_with_number", prev_number)
+
+	#my added code for data import tool not to override the existing one
+	def merge_salary_details(self):
+		if not self.name:
+			return
+
+		try:
+			existing = frappe.get_doc("Employee", self.name)
+		except frappe.DoesNotExistError:
+			return  # New employee; nothing to merge
+
+		def merge_table(table_name):
+			existing_rows = {row.salary_component: row for row in getattr(existing, table_name)}
+			imported_rows = {row.salary_component: row for row in getattr(self, table_name)}
+
+			# Keep existing components that are not in the import
+			final_rows = []
+
+			for comp, row in existing_rows.items():
+				if comp not in imported_rows:
+					final_rows.append(row)
+
+			# Add/overwrite imported rows
+			for comp, row in imported_rows.items():
+				final_rows.append(row)
+
+			# Clear and re-append
+			self.set(table_name, [])
+			for row in final_rows:
+				#make sure to return to this back their is unfinished logic 
+				self.append(table_name, {
+					"salary_component": row.salary_component,
+					
+					"amount": row.amount
+				})
+
+		merge_table("earnings")
+		merge_table("deductions")
+    
+	#my code added 
+	def get_abbr_for_component(self, component):
+		return frappe.db.get_value("Salary Component", component, "abbr") or component[:3].upper()
 
 
 def validate_employee_role(doc, method=None, ignore_emp_check=False):
