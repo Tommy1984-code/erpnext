@@ -101,6 +101,11 @@
   "bank_ac_no",
   "iban",
   "earning_deduction",
+  "section_break_smki",
+  "add_default_benefit",
+  "column_break_ogph",
+  "add_defaul_dedctions",
+  "section_break_xudw",
   "earnings",
   "deductions",
   "conditions_and_formula_variable_and_example",
@@ -994,6 +999,28 @@
    "in_global_search": 1,
    "in_list_view": 1,
    "label": "Branch Region"
+  },
+  {
+   "fieldname": "section_break_smki",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "add_default_benefit",
+   "fieldtype": "Button",
+   "label": "Add Default Benefits"
+  },
+  {
+   "fieldname": "add_defaul_dedctions",
+   "fieldtype": "Button",
+   "label": "Add Defaul Dedctions"
+  },
+  {
+   "fieldname": "section_break_xudw",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_ogph",
+   "fieldtype": "Column Break"
   }
  ],
  "icon": "fa fa-user",
@@ -1001,7 +1028,7 @@
  "image_field": "image",
  "is_tree": 1,
  "links": [],
- "modified": "2025-05-07 12:30:10.736844",
+ "modified": "2025-07-03 14:42:25.471418",
  "modified_by": "Administrator",
  "module": "Setup",
  "name": "Employee",

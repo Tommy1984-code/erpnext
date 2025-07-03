@@ -548,3 +548,44 @@ def get_salary_component(doctype, txt, searchfield, start, page_len, filters):
 
 	return accounts
 
+#my code 
+@frappe.whitelist()
+def get_default_salary_components():
+    fields = [
+        "name",
+        "salary_component",
+        "salary_component_abbr",
+        "type",
+        "description",
+        "depends_on_payment_days",
+        "is_tax_applicable",
+        "deduct_full_tax_on_selected_payroll_date",
+        "variable_based_on_taxable_salary",
+        "is_income_tax_component",
+        "exempted_from_income_tax",
+        "round_to_the_nearest_integer",
+        "statistical_component",
+        "do_not_include_in_total",
+        "remove_if_zero_valued",
+        "disabled",
+        "loan_component",
+        "default_component",
+        "condition",
+        "amount_based_on_formula",
+        "formula",
+        "amount",
+        "round_to_the_nearest_integer",
+        
+    ]
+
+    earnings = frappe.get_all(
+        "Salary Component",
+        filters={"type": "Earning", "default_component": 1, "disabled": 0},
+        fields=fields,
+    )
+    deductions = frappe.get_all(
+        "Salary Component",
+        filters={"type": "Deduction", "default_component": 1, "disabled": 0},
+        fields=fields,
+    )
+    return {"earnings": earnings, "deductions": deductions}

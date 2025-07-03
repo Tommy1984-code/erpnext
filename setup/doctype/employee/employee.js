@@ -18,6 +18,8 @@ erpnext.setup.EmployeeController = class EmployeeController extends frappe.ui.fo
 
 	refresh() {
 		erpnext.toggle_naming_series();
+		
+		
 	}
 // my code that is adding the filtering of earning and deduction column
 	set_earning_deduction_component(frm) {
@@ -38,6 +40,76 @@ erpnext.setup.EmployeeController = class EmployeeController extends frappe.ui.fo
 };
 
 frappe.ui.form.on("Employee", {
+		
+		add_default_benefit: function(frm) {
+			frappe.call({
+				method: "erpnext.setup.doctype.employee.employee.get_default_salary_components",
+				callback: function(r) {
+					if (r.message) {
+						(r.message.earnings || []).forEach((comp) => {
+							let exists = frm.doc.earnings.some(e => e.salary_component === comp.name);
+							if (!exists) {
+								frm.add_child("earnings", {
+									salary_component: comp.name,
+									salary_component_abbr: comp.salary_component_abbr,
+									description: comp.description,
+									depends_on_payment_days: comp.depends_on_payment_days,
+									is_tax_applicable: comp.is_tax_applicable,
+									deduct_full_tax_on_selected_payroll_date: comp.deduct_full_tax_on_selected_payroll_date,
+									variable_based_on_taxable_salary: comp.variable_based_on_taxable_salary,
+									is_income_tax_component: comp.is_income_tax_component,
+									exempted_from_income_tax: comp.exempted_from_income_tax,
+									round_to_the_nearest_integer: comp.round_to_the_nearest_integer,
+									statistical_component: comp.statistical_component,
+									do_not_include_in_total: comp.do_not_include_in_total,
+									remove_if_zero_valued: comp.remove_if_zero_valued,
+									disabled: comp.disabled,
+									loan_component: comp.loan_component,
+									condition: comp.condition,
+									amount_based_on_formula: comp.amount_based_on_formula,
+									formula: comp.formula,
+									amount: comp.amount,
+									help: comp.help,
+								});
+							}
+						});
+	
+						(r.message.deductions || []).forEach((comp) => {
+							let exists = frm.doc.deductions.some(e => e.salary_component === comp.name);
+							if (!exists) {
+								frm.add_child("deductions", {
+									salary_component: comp.name,
+									salary_component_abbr: comp.salary_component_abbr,
+									description: comp.description,
+									depends_on_payment_days: comp.depends_on_payment_days,
+									is_tax_applicable: comp.is_tax_applicable,
+									deduct_full_tax_on_selected_payroll_date: comp.deduct_full_tax_on_selected_payroll_date,
+									variable_based_on_taxable_salary: comp.variable_based_on_taxable_salary,
+									is_income_tax_component: comp.is_income_tax_component,
+									exempted_from_income_tax: comp.exempted_from_income_tax,
+									round_to_the_nearest_integer: comp.round_to_the_nearest_integer,
+									statistical_component: comp.statistical_component,
+									do_not_include_in_total: comp.do_not_include_in_total,
+									remove_if_zero_valued: comp.remove_if_zero_valued,
+									disabled: comp.disabled,
+									loan_component: comp.loan_component,
+									condition: comp.condition,
+									amount_based_on_formula: comp.amount_based_on_formula,
+									formula: comp.formula,
+									amount: comp.amount,
+									help: comp.help,
+								});
+							}
+						});
+	
+						frm.refresh_field("earnings");
+						frm.refresh_field("deductions");
+					}
+				},
+			});
+		},
+	
+	
 	onload: function (frm) {
 		frm.trigger('set_earning_deduction_component')//my triger the filter
 		frm.set_query("department", function () {
@@ -47,6 +119,34 @@ frappe.ui.form.on("Employee", {
 				},
 			};
 		});
+
+		// if(!frm.doc.__islocal) return; // Only do this for new doc (unsaved)
+
+        // // Clear first if you want to avoid duplication
+        // frm.clear_table('earnings');
+        // frm.clear_table('deductions');
+
+        // // Call backend to get default components
+        // frappe.call({
+        //     method: "erpnext.setup.doctype.employee.employee.get_default_salary_components",
+        //     callback: function(r) {
+        //         if(r.message){
+        //             r.message.earnings.forEach(component => {
+        //                 let row = frm.add_child('earnings');
+        //                 row.salary_component = component.name;
+        //                 row.amount = component.default_amount || 0;
+        //             });
+        //             r.message.deductions.forEach(component => {
+        //                 let row = frm.add_child('deductions');
+        //                 row.salary_component = component.name;
+        //                 row.amount = component.default_amount || 0;
+        //             });
+        //             frm.refresh_field('earnings');
+        //             frm.refresh_field('deductions');
+        //         }
+        //     }
+        // });
+    
 		
 	},
 	prefered_contact_email: function (frm) {
@@ -275,3 +375,6 @@ frappe.ui.form.on("Salary Detail", {
 		}
 	},
 });
+
+
+
