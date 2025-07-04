@@ -124,6 +124,9 @@
   "date_of_issue",
   "place_of_issue",
   "profile_tab",
+  "section_break_kghb",
+  "certificate",
+  "section_break_tchi",
   "bio",
   "educational_qualification",
   "education",
@@ -1015,6 +1018,19 @@
   {
    "fieldname": "column_break_ogph",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_kghb",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "certificate",
+   "fieldtype": "Attach",
+   "label": "Certificate"
+  },
+  {
+   "fieldname": "section_break_tchi",
+   "fieldtype": "Section Break"
   }
  ],
  "icon": "fa fa-user",
@@ -1022,7 +1038,7 @@
  "image_field": "image",
  "is_tree": 1,
  "links": [],
- "modified": "2025-07-04 07:58:00.288757",
+ "modified": "2025-07-04 09:01:16.678492",
  "modified_by": "Administrator",
  "module": "Setup",
  "name": "Employee",

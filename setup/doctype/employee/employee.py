@@ -66,6 +66,10 @@ class Employee(NestedSet):
 				user.save(ignore_permissions=True)
 				remove_user_permission("Employee", self.name, existing_user_id)
 
+		if self.employee_tin_no and (not self.employee_tin_no.isdigit() or len(self.employee_tin_no) != 10):
+			frappe.throw(_("Employee TIN Number must be exactly 10 digits."))
+
+
 	def after_rename(self, old, new, merge):
 		self.db_set("employee", new)
 
