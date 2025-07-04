@@ -39,6 +39,7 @@
   "column_break_25",
   "designation",
   "reports_to",
+  "section",
   "column_break_18",
   "branch",
   "branch_region",
@@ -1031,6 +1032,13 @@
   {
    "fieldname": "section_break_tchi",
    "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "section",
+   "fieldtype": "Link",
+   "label": "Section",
+   "mandatory_depends_on": "eval:doc.department\n",
+   "options": "Section"
   }
  ],
  "icon": "fa fa-user",
@@ -1038,7 +1046,7 @@
  "image_field": "image",
  "is_tree": 1,
  "links": [],
- "modified": "2025-07-04 09:01:16.678492",
+ "modified": "2025-07-04 09:46:49.299046",
  "modified_by": "Administrator",
  "module": "Setup",
  "name": "Employee",

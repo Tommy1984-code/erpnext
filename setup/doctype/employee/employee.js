@@ -108,6 +108,15 @@ frappe.ui.form.on("Employee", {
 				},
 			});
 		},
+
+		department: function (frm) {
+			// clear section when department changes
+			frm.set_value("section", null);
+		  },
+		
+		  section: function (frm) {
+			// optional: additional logic if needed on section select
+		  },
 	
 	
 	onload: function (frm) {
@@ -119,33 +128,16 @@ frappe.ui.form.on("Employee", {
 				},
 			};
 		});
+		frm.set_query("section", function () {
+			if (!frm.doc.department) return {};
+			return {
+			  filters: {
+				department: frm.doc.department
+			  }
+			};
+		  });
 
-		// if(!frm.doc.__islocal) return; // Only do this for new doc (unsaved)
-
-        // // Clear first if you want to avoid duplication
-        // frm.clear_table('earnings');
-        // frm.clear_table('deductions');
-
-        // // Call backend to get default components
-        // frappe.call({
-        //     method: "erpnext.setup.doctype.employee.employee.get_default_salary_components",
-        //     callback: function(r) {
-        //         if(r.message){
-        //             r.message.earnings.forEach(component => {
-        //                 let row = frm.add_child('earnings');
-        //                 row.salary_component = component.name;
-        //                 row.amount = component.default_amount || 0;
-        //             });
-        //             r.message.deductions.forEach(component => {
-        //                 let row = frm.add_child('deductions');
-        //                 row.salary_component = component.name;
-        //                 row.amount = component.default_amount || 0;
-        //             });
-        //             frm.refresh_field('earnings');
-        //             frm.refresh_field('deductions');
-        //         }
-        //     }
-        // });
+		
     
 		
 	},
