@@ -104,7 +104,6 @@
   "section_break_smki",
   "add_default_benefit",
   "column_break_ogph",
-  "add_defaul_dedctions",
   "section_break_xudw",
   "earnings",
   "deductions",
@@ -1007,12 +1006,7 @@
   {
    "fieldname": "add_default_benefit",
    "fieldtype": "Button",
-   "label": "Add Default Benefits"
-  },
-  {
-   "fieldname": "add_defaul_dedctions",
-   "fieldtype": "Button",
-   "label": "Add Defaul Dedctions"
+   "label": "Add Default Benefits And Deductions"
   },
   {
    "fieldname": "section_break_xudw",
@@ -1028,7 +1022,7 @@
  "image_field": "image",
  "is_tree": 1,
  "links": [],
- "modified": "2025-07-03 14:42:25.471418",
+ "modified": "2025-07-04 07:58:00.288757",
  "modified_by": "Administrator",
  "module": "Setup",
  "name": "Employee",

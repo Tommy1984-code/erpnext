@@ -173,6 +173,7 @@ frappe.ui.form.on("Employee", {
 	status: function (frm) {
 		return frm.call({
 			method: "deactivate_sales_person",
+
 			args: {
 				employee: frm.doc.employee,
 				status: frm.doc.status,
@@ -374,6 +375,63 @@ frappe.ui.form.on("Salary Detail", {
 			frappe.model.set_value(cdt, cdn, "formula", null);
 		}
 	},
+
+	salary_component: function (frm, cdt, cdn) {
+		const row = locals[cdt][cdn];
+		const selected = row.salary_component;
+	
+		if (!selected) return;
+	
+		// Check for duplicates across BOTH earnings and deductions
+		const all_components = [
+			...(frm.doc.earnings || []),
+			...(frm.doc.deductions || []),
+		];
+	
+		const duplicate = all_components.find(
+			r => r.salary_component === selected && r.name !== row.name
+		);
+	
+		if (duplicate) {
+			frappe.msgprint(__("This Salary Component is already used."));
+			// Use a short delay to ensure UI responds before clearing
+			setTimeout(() => {
+				frappe.model.set_value(cdt, cdn, "salary_component", null);
+			}, 100);
+			return; // ← This is critical to prevent executing the fetch
+		}
+	
+		// ✅ Only fetch if NOT duplicate
+		frappe.call({
+			method: "frappe.client.get",
+			args: {
+				doctype: "Salary Component",
+				name: selected,
+			},
+			callback: function (data) {
+				if (data.message) {
+					const result = data.message;
+					frappe.model.set_value(cdt, cdn, "condition", result.condition);
+					frappe.model.set_value(cdt, cdn, "amount_based_on_formula", result.amount_based_on_formula);
+					if (result.amount_based_on_formula == 1) {
+						frappe.model.set_value(cdt, cdn, "formula", result.formula);
+					} else {
+						frappe.model.set_value(cdt, cdn, "amount", result.amount);
+					}
+					frappe.model.set_value(cdt, cdn, "statistical_component", result.statistical_component);
+					frappe.model.set_value(cdt, cdn, "depends_on_payment_days", result.depends_on_payment_days);
+					frappe.model.set_value(cdt, cdn, "do_not_include_in_total", result.do_not_include_in_total);
+					frappe.model.set_value(cdt, cdn, "variable_based_on_taxable_salary", result.variable_based_on_taxable_salary);
+					frappe.model.set_value(cdt, cdn, "is_tax_applicable", result.is_tax_applicable);
+					frappe.model.set_value(cdt, cdn, "is_flexible_benefit", result.is_flexible_benefit);
+					refresh_field("earnings");
+					refresh_field("deductions");
+				}
+			}
+		});
+	}
+	
+	
 });
 
 
