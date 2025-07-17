@@ -112,11 +112,19 @@ frappe.ui.form.on("Employee", {
 		department: function (frm) {
 			// clear section when department changes
 			frm.set_value("section", null);
+			frm.set_query("section", function () {
+				if (!frm.doc.department) return {};
+				return {
+					filters: {
+						department: frm.doc.department
+					}
+				};
+			});
 		  },
 		
-		  section: function (frm) {
-			// optional: additional logic if needed on section select
-		  },
+		//   section: function (frm) {
+		// 	// optional: additional logic if needed on section select
+		//   },
 	
 	
 	onload: function (frm) {
@@ -128,17 +136,14 @@ frappe.ui.form.on("Employee", {
 				},
 			};
 		});
-		frm.set_query("section", function () {
-			if (!frm.doc.department) return {};
-			return {
-			  filters: {
-				department: frm.doc.department
-			  }
-			};
-		  });
-
-		
-    
+		// frm.set_query("section", function () {
+		// 	if (!frm.doc.department) return {};
+		// 	return {
+		// 	  filters: {
+		// 		department: frm.doc.department
+		// 	  }
+		// 	};
+		//   });
 		
 	},
 	prefered_contact_email: function (frm) {

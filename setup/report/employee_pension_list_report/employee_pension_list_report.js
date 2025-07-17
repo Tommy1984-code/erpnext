@@ -47,5 +47,6 @@ frappe.query_reports["Employee Pension List Report"] = {
             "fieldtype": "Date",
             "default": frappe.datetime.month_end()
         }
-    ]
+    ],
+    
 };

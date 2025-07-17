@@ -91,7 +91,6 @@
   "salary_cb",
   "payroll_cost_center",
   "base",
-  "tax_free_transportation_amount",
   "column_break_mypt",
   "employee_tin_no",
   "pension_id",
@@ -105,6 +104,7 @@
   "section_break_smki",
   "add_default_benefit",
   "column_break_ogph",
+  "tax_free_transportation_amount",
   "section_break_xudw",
   "earnings",
   "deductions",
@@ -1037,7 +1037,7 @@
    "fieldname": "section",
    "fieldtype": "Link",
    "label": "Section",
-   "mandatory_depends_on": "eval:doc.department\n",
+   "mandatory_depends_on": "\n",
    "options": "Section"
   }
  ],
@@ -1046,7 +1046,7 @@
  "image_field": "image",
  "is_tree": 1,
  "links": [],
- "modified": "2025-07-04 09:46:49.299046",
+ "modified": "2025-07-17 09:19:39.219632",
  "modified_by": "Administrator",
  "module": "Setup",
  "name": "Employee",
