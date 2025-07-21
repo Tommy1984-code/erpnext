@@ -41,74 +41,90 @@ erpnext.setup.EmployeeController = class EmployeeController extends frappe.ui.fo
 
 frappe.ui.form.on("Employee", {
 		
-		add_default_benefit: function(frm) {
-			frappe.call({
-				method: "erpnext.setup.doctype.employee.employee.get_default_salary_components",
-				callback: function(r) {
-					if (r.message) {
-						(r.message.earnings || []).forEach((comp) => {
-							let exists = frm.doc.earnings.some(e => e.salary_component === comp.name);
-							if (!exists) {
-								frm.add_child("earnings", {
-									salary_component: comp.name,
-									salary_component_abbr: comp.salary_component_abbr,
-									description: comp.description,
-									depends_on_payment_days: comp.depends_on_payment_days,
-									is_tax_applicable: comp.is_tax_applicable,
-									deduct_full_tax_on_selected_payroll_date: comp.deduct_full_tax_on_selected_payroll_date,
-									variable_based_on_taxable_salary: comp.variable_based_on_taxable_salary,
-									is_income_tax_component: comp.is_income_tax_component,
-									exempted_from_income_tax: comp.exempted_from_income_tax,
-									round_to_the_nearest_integer: comp.round_to_the_nearest_integer,
-									statistical_component: comp.statistical_component,
-									do_not_include_in_total: comp.do_not_include_in_total,
-									remove_if_zero_valued: comp.remove_if_zero_valued,
-									disabled: comp.disabled,
-									loan_component: comp.loan_component,
-									condition: comp.condition,
-									amount_based_on_formula: comp.amount_based_on_formula,
-									formula: comp.formula,
-									amount: comp.amount,
-									help: comp.help,
-								});
-							}
-						});
+	add_default_benefit: function(frm) {
+		frappe.call({
+			method: "erpnext.setup.doctype.employee.employee.get_default_salary_components",
+			callback: function(r) {
+				if (r.message) {
+					(r.message.earnings || []).forEach((comp) => {
+						// Skip Pension if opted out
+						if (
+							comp.name === "pension" &&  // 👈 Adjust this if your component name differs
+							frm.doc.pension_eligibility === "Opting Out of Pension"
+						) {
+							return;
+						}
 	
-						(r.message.deductions || []).forEach((comp) => {
-							let exists = frm.doc.deductions.some(e => e.salary_component === comp.name);
-							if (!exists) {
-								frm.add_child("deductions", {
-									salary_component: comp.name,
-									salary_component_abbr: comp.salary_component_abbr,
-									description: comp.description,
-									depends_on_payment_days: comp.depends_on_payment_days,
-									is_tax_applicable: comp.is_tax_applicable,
-									deduct_full_tax_on_selected_payroll_date: comp.deduct_full_tax_on_selected_payroll_date,
-									variable_based_on_taxable_salary: comp.variable_based_on_taxable_salary,
-									is_income_tax_component: comp.is_income_tax_component,
-									exempted_from_income_tax: comp.exempted_from_income_tax,
-									round_to_the_nearest_integer: comp.round_to_the_nearest_integer,
-									statistical_component: comp.statistical_component,
-									do_not_include_in_total: comp.do_not_include_in_total,
-									remove_if_zero_valued: comp.remove_if_zero_valued,
-									disabled: comp.disabled,
-									loan_component: comp.loan_component,
-									condition: comp.condition,
-									amount_based_on_formula: comp.amount_based_on_formula,
-									formula: comp.formula,
-									amount: comp.amount,
-									help: comp.help,
-								});
-							}
-						});
+						let exists = frm.doc.earnings.some(e => e.salary_component === comp.name);
+						if (!exists) {
+							frm.add_child("earnings", {
+								salary_component: comp.name,
+								salary_component_abbr: comp.salary_component_abbr,
+								description: comp.description,
+								depends_on_payment_days: comp.depends_on_payment_days,
+								is_tax_applicable: comp.is_tax_applicable,
+								deduct_full_tax_on_selected_payroll_date: comp.deduct_full_tax_on_selected_payroll_date,
+								variable_based_on_taxable_salary: comp.variable_based_on_taxable_salary,
+								is_income_tax_component: comp.is_income_tax_component,
+								exempted_from_income_tax: comp.exempted_from_income_tax,
+								round_to_the_nearest_integer: comp.round_to_the_nearest_integer,
+								statistical_component: comp.statistical_component,
+								do_not_include_in_total: comp.do_not_include_in_total,
+								remove_if_zero_valued: comp.remove_if_zero_valued,
+								disabled: comp.disabled,
+								loan_component: comp.loan_component,
+								condition: comp.condition,
+								amount_based_on_formula: comp.amount_based_on_formula,
+								formula: comp.formula,
+								amount: comp.amount,
+								help: comp.help,
+							});
+						}
+					});
 	
-						frm.refresh_field("earnings");
-						frm.refresh_field("deductions");
-					}
-				},
-			});
-		},
-
+					(r.message.deductions || []).forEach((comp) => {
+						// Skip Pension if opted out (if it's under deductions)
+						if (
+							comp.name === "pension" &&
+							frm.doc.pension_eligibility === "Opting Out of Pension"
+						) {
+							return;
+						}
+	
+						let exists = frm.doc.deductions.some(e => e.salary_component === comp.name);
+						if (!exists) {
+							frm.add_child("deductions", {
+								salary_component: comp.name,
+								salary_component_abbr: comp.salary_component_abbr,
+								description: comp.description,
+								depends_on_payment_days: comp.depends_on_payment_days,
+								is_tax_applicable: comp.is_tax_applicable,
+								deduct_full_tax_on_selected_payroll_date: comp.deduct_full_tax_on_selected_payroll_date,
+								variable_based_on_taxable_salary: comp.variable_based_on_taxable_salary,
+								is_income_tax_component: comp.is_income_tax_component,
+								exempted_from_income_tax: comp.exempted_from_income_tax,
+								round_to_the_nearest_integer: comp.round_to_the_nearest_integer,
+								statistical_component: comp.statistical_component,
+								do_not_include_in_total: comp.do_not_include_in_total,
+								remove_if_zero_valued: comp.remove_if_zero_valued,
+								disabled: comp.disabled,
+								loan_component: comp.loan_component,
+								condition: comp.condition,
+								amount_based_on_formula: comp.amount_based_on_formula,
+								formula: comp.formula,
+								amount: comp.amount,
+								help: comp.help,
+							});
+						}
+					});
+	
+					frm.refresh_field("earnings");
+					frm.refresh_field("deductions");
+				}
+			},
+		});
+	},
+	
 		department: function (frm) {
 			// clear section when department changes
 			frm.set_value("section", null);

@@ -55,6 +55,7 @@
   "date_of_retirement",
   "contact_details",
   "cell_number",
+  "resident_id",
   "column_break_40",
   "personal_email",
   "company_email",
@@ -91,6 +92,7 @@
   "salary_cb",
   "payroll_cost_center",
   "base",
+  "pension_eligibility",
   "column_break_mypt",
   "employee_tin_no",
   "pension_id",
@@ -1039,6 +1041,17 @@
    "label": "Section",
    "mandatory_depends_on": "\n",
    "options": "Section"
+  },
+  {
+   "fieldname": "resident_id",
+   "fieldtype": "Attach",
+   "label": "Resident Id"
+  },
+  {
+   "fieldname": "pension_eligibility",
+   "fieldtype": "Select",
+   "label": "Pension Eligibility",
+   "options": "Pension Grant\nOpting Out of Pension"
   }
  ],
  "icon": "fa fa-user",
@@ -1046,7 +1059,7 @@
  "image_field": "image",
  "is_tree": 1,
  "links": [],
- "modified": "2025-07-17 09:19:39.219632",
+ "modified": "2025-07-21 08:10:14.754333",
  "modified_by": "Administrator",
  "module": "Setup",
  "name": "Employee",
