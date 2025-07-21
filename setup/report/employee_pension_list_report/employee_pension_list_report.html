@@ -2,184 +2,262 @@
 
   <script src="https://cdn.tailwindcss.com"></script>
  
-<!-- HEADER SECTION -->
-<div class="report-header bg-white text-sm">
-    <div class="flex w-full border border-black h-32 items-center">
-
-        <!-- Left Logo -->
-        <div class="border-r border-black flex items-center justify-center w-1/6 h-full p-2">
-            <img src="/private/files/Emblem_of_Ethiopia.svg" class="h-full max-h-24 object-contain">
-        </div>
-
-        <!-- Federal Government Text -->
-        <div class="border-r border-black p-2 text-center flex flex-col justify-center w-2/5 h-full">
-            <div class="text-xl font-semibold leading-tight">ኢትዮጵያ ፌዴራላዊ ዴሞክራሲያዊ ሪፐብሊክ</div>
-            <div class="text-xl font-semibold leading-tight">የኢትዮጵያ ገቢዎችና ጉምሩክ ባለስልጣን</div>
-        </div>
-
-        <!-- Pension Form Title -->
-        <div class="border-r border-black p-2 text-center flex flex-col justify-center w-2/5 h-full">
-            <div class="text-base font-semibold leading-snug">የግል ድርጅት ሠራተኞች የጡረታ መዋጮ ማሳወቂያ ቅፅ</div>
-            <div class="text-base font-medium leading-snug">(የግል ድርጅቶች ሠራተኞች ጡረታ አዋጅ ቁጥር 715/2003)</div>
-            <div class="text-xs leading-snug">ቅፅ ቁጥር2/2003 የተጨማሪ ማስታወቂያ ቅፅ </div>
-        </div>
-
-        <!-- Right Logo -->
-        <div class="flex items-center justify-center w-1/6 h-full p-2">
-            <img src="/private/files/addis ababa transparent logo.png" class="h-full max-h-24 object-contain">
-        </div>
-
-    </div>
-</div>
-
-<h1 style="text-align:center; margin-top: 20px; margin-bottom: 10px;">ክፍል 1.የጡረታ መዋጮውን የሚከፍለው ድርጅት ዝርዝር መረጃ</h1>
-
-<table class="main-table">
-    <tr>
-        <th>
-            <div>Name of Organization</div>
-            <div style="font-size: 1em; color: #555;">የድርጅቱ ስም</div>    
-        </th>
-        <th>
-            <div>Organization TIN number</div> 
-            <div style="font-size: 1em; color: #555;">የድርጅቱ የግብር ከፋይ መለያ ቁጥር</div>
-        </th>
-        <th>
-            <div>Tax Account Number</div>
-            <div style="font-size: 1em; color: #555;">የግብር ሂሳብ ቁጥር</div>
-        </th>
-        <th>
-            <div>Period For Payment</div>
-            <div style="font-size: 1em; color: #555;">የክፍያ ጊዜ</div>
-        </th>
-        <th colspan="2">Page List</th>
-    </tr>
-    <tr>
-        <td>{{ data[0].company_name }}</td>
-        <td>{{ data[0].organization_tin_number }}</td>
-        <td>{{ data[0].tax_account_number }}</td>
-        <td>{{data[0].period_for_payment}}</td>
-        <td colspan="2">Page 1 of 8</td>
-    </tr>
-    <tr>
-        <th>2.a ክልል</th>
-        <th colspan="2">2.b ዞን/ክፍለ ከተማ</th>
-        <th colspan="2">5 የግብር ሰብሳቢ ቢሮ ስም</th>
-        <th>የሰነድ ቁጥር (ለቢሮ አገልግሎት ብቻ)</th>
-    </tr>
-    <tr>
-        <td>{{ data[0].region }}</td>
-        <td colspan ="2">{{ data[0].zonesub_district }}</td>
-        <td colspan="2">{{ data[0].name_of_the_tax_collector }}</td>
-        <td>{{ data[0].document_number_for_office_use_only }}</td>
-    </tr>
-    <tr>
-        <th>2.c ወረዳ</th>
-        <th>2.d የቀበሌ/ገበሬዎች ማህበር</th>
-        <th>2.e የቤት ቁጥር</th>
-        <th>6 ስልክ ቁጥር</th>
-        <th>7 ፋክስ ቁጥር</th>
-        <th></th>
-    </tr>
-    <tr>
-        <td>{{ data[0].woreda }}</td>
-        <td>{{ data[0].kebele }}</td>
-        <td>{{ data[0].house_number }}</td>
-        <td>{{ data[0].phone }}</td>
-        <td>{{ data[0].fax }}</td>
-        <td></td>
-        
-    </tr>
-</table>
-
-
-
-<!-- TABLE STYLING -->
-<style>
-     .main-table {
-        width: 100%;
-        border-collapse: collapse;
+  <style>
+    .main-table {
+      width: 100%;
+      border-collapse: collapse;
     }
     .main-table th, .main-table td {
-        padding: 8px;
-        text-align: center;
-        border: 1px solid #ccc;
+      padding: 8px;
+      text-align: center;
+      border: 1px solid #ccc;
     }
     .main-table th {
-        background-color: #f2f2f2;
+      background-color: #f2f2f2;
     }
     .main-table td {
-        background-color: #fff;
+      background-color: #fff;
     }
-    .main-table td[colspan="2"], .main-table th[colspan="2"] {
-        text-align: left;
+    .no-padding-body th, td {
+      padding: 3px !important;
+      margin: 0 !important;
+      color: black !important;
+      page-break-inside: avoid;
     }
-    .pension-table {
-        border-collapse: collapse;
-        width: 100%;
-        font-size: 12px;
-        margin-top: 20px;
+    @media print {
+      
+      .report-header {
+      margin-bottom: 0 !important;
+      padding-bottom: 0 !important;
     }
-    .pension-table th, .pension-table td {
-        border: 1px solid #000;
-        padding: 6px;
-        text-align: left;
+      .company-info-title {
+        margin-top: 10px !important;
+        margin-bottom: 10px !important;
+        font-size: 14px !important;
+        padding-top: 30px !important;
+      }
+      .data-table-title {
+        padding-top: 1px !important;
+        padding-bottom: 1px !important;
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+      }
+  
+      .fixed-header {
+        height: 100px !important;
+      }
+      .fixed-header img {
+        max-height: 80px !important;
+      }
+      
+      .fixed-header .text-xl {
+        font-size: 14px !important;
+      }
+      .fixed-header .text-base {
+        font-size: 12px !important;
+      }
+      .company-info-table h1 {
+        margin-top: 5px !important;
+        margin-bottom: 0 !important;
+        padding-bottom: 0 !important;
+        font-size: 14px !important;
+      }
+      .company-info-table table th,
+      .company-info-table table td {
+        font-size: 11px !important;
+        padding: 4px !important;
+      }
+      .no-break {
+        page-break-inside: avoid;
+      }
+      .no-padding-body th,
+      .no-padding-body td {
+        padding-top: 6px !important;
+        padding-bottom: 6px !important;
+        padding-left: 6px !important;
+        padding-right: 6px !important;
+        font-size: 10px !important;
+        line-height: 1.4 !important;
+      }
+  
+      .no-padding-body td {
+        vertical-align: middle !important;
+      }
+  
+      .footer-on-every-page {
+      position: fixed;
+      bottom: 0;
+      left: 0; right: 0;
+      background: white;
+      border-top: 1px solid #ccc;
+      padding: 10px 20px;
+      font-size: 12px;
+      z-index: 9999;
     }
-    .pension-table th {
-        background-color: #f2f2f2;
-        color: black !important;
+    .footer-last-page {
+    position: fixed;
+    bottom: 0;
+    left: 0; right: 0;
+    background: white;
+    border-top: 1px solid #ccc;
+    padding: 10px 20px;
+    font-size: 12px;
+    z-index: 9999;
+  }
+  
+   
     }
+  </style>
 
+<div class="data-table">
+    <div class="w-full max-w-screen-xl mx-auto">
+  
+      {%
+        var total_basic_salary = 0;
+        var total_employee_pension = 0;
+        var total_company_pension = 0;
+        var total_combined_pension = 0;
+  
+        var chunk_size = 10;
+        var page_count = Math.ceil(data.length / chunk_size);
+  
+        for (var page = 0; page < page_count; page++) {
+          var start = page * chunk_size;
+          var end = Math.min(start + chunk_size, data.length);
+      %}
+  
+      <!-- Logo + Company Info Header FIRST -->
+      {% if (page > 0) { %}
+      <div class="report-header" style="page-break-before: always; page-break-after: avoid; margin-bottom: 20px;">
+    {% } else { %}
+      <div class="report-header" style="page-break-after: avoid; margin-bottom: 20px;">
+    {% } %}
     
-</style>
-
-
-<!-- REPORT TITLE -->
-<h3 style="text-align:center; margin-top: 20px;">የሰራተኛ ጡረታ መዋጮ ዝርዝር</h3>
-
-<!-- REPORT TABLE -->
-<table class="pension-table">
-    <thead>
-        <tr>
-            <th>No</th>
-            <th>Full Name</th>
-            <th>TIN Number</th>
-            <th>Date of Hire (G.C)</th>
-            <th>Basic Salary</th>
-            <th>Employee Pension (7%)</th>
-            <th>Company Pension (11%)</th>
-            <th>Total Pension (18%)</th>
-            <th>Signature</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% 
-            var total_basic_salary = 0;
-            var total_employee_pension = 0;
-            var total_company_pension = 0;
-            var total_combined_pension = 0;
-        
-            for(var i=0; i<data.length; i++) { 
+        <div class="fixed-header bg-white text-sm">
+          <div class="flex w-full border border-black h-32 items-center">
+  
+            <!-- Left Logo -->
+            <div class="border-r border-black flex items-center justify-center w-1/6 h-full p-2">
+              <img src="/private/files/Emblem_of_Ethiopia.svg" class="h-full max-h-24 object-contain" />
+            </div>
+  
+            <!-- Federal Government Text -->
+            <div class="border-r border-black p-2 text-center flex flex-col justify-center w-2/5 h-full">
+              <div class="text-xl font-semibold leading-tight">ኢትዮጵያ ፌዴራላዊ ዴሞክራሲያዊ ሪፐብሊክ</div>
+              <div class="text-xl font-semibold leading-tight">የኢትዮጵያ ገቢዎችና ጉምሩክ ባለስልጣን</div>
+            </div>
+  
+            <!-- Pension Form Title -->
+            <div class="border-r border-black p-2 text-center flex flex-col justify-center w-2/5 h-full">
+                <div class="text-base font-semibold leading-snug">የግል ድርጅት ሠራተኞች የጡረታ መዋጮ ማሳወቂያ ቅፅ</div>
+                <div class="text-base font-medium leading-snug">(የግል ድርጅቶች ሠራተኞች ጡረታ አዋጅ ቁጥር 715/2003)</div>
+                <div class="text-xs leading-snug">ቅፅ ቁጥር2/2003 የተጨማሪ ማስታወቂያ ቅፅ </div>
+            </div>
+  
+            <!-- Right Logo -->
+            <div class="flex items-center justify-center w-1/6 h-full p-2">
+              <img src="/private/files/addis ababa transparent logo.png" class="h-full max-h-24 object-contain" />
+            </div>
+  
+          </div>
+        </div>
+  
+        <div class="company-info-table">
+          <h1 class="company-info-title" style="text-align:center; margin-top: 20px; margin-bottom: 10px;">
+            ክፍል 1.የጡረታ መዋጮውን የሚከፍለው ድርጅት ዝርዝር መረጃ
+          </h1>
+  
+          <table class="main-table" style="margin-bottom: 20px;">
+            <tr>
+              <th>የድርጅቱ ስም</th>
+              <th>የድርጅቱ የግብር ከፋይ መለያ ቁጥር</th>
+              <th>የግብር ሂሳብ ቁጥር</th>
+              <th>የክፍያ ጊዜ</th>
+              <th colspan="2">Page List</th>
+            </tr>
+            <tr>
+              <td>{{ data[0].company_name }}</td>
+              <td>{{ data[0].organization_tin_number }}</td>
+              <td>{{ data[0].tax_account_number }}</td>
+              <td>{{ data[0].period_for_payment }}</td>
+              <td colspan="2">Page {{ page + 1 }} of {{ page_count }}</td>
+            </tr>
+            <tr>
+              <th>2.a ክልል</th>
+              <th colspan="2">2.b ዞን/ክፍለ ከተማ</th>
+              <th colspan="2">5 የግብር ሰብሳቢ ቢሮ ስም</th>
+              <th>የሰነድ ቁጥር (ለቢሮ አገልግሎት ብቻ)</th>
+            </tr>
+            <tr>
+              <td>{{ data[0].region }}</td>
+              <td colspan="2">{{ data[0].zonesub_district }}</td>
+              <td colspan="2">{{ data[0].name_of_the_tax_collector }}</td>
+              <td>{{ data[0].document_number_for_office_use_only }}</td>
+            </tr>
+            <tr>
+              <th>2.c ወረዳ</th>
+              <th>2.d የቀበሌ/ገበሬዎች ማህበር</th>
+              <th>2.e የቤት ቁጥር</th>
+              <th>6 ስልክ ቁጥር</th>
+              <th>7 ፋክስ ቁጥር</th>
+              <th></th>
+            </tr>
+            <tr>
+              <td>{{ data[0].woreda }}</td>
+              <td>{{ data[0].kebele }}</td>
+              <td>{{ data[0].house_number }}</td>
+              <td>{{ data[0].phone }}</td>
+              <td>{{ data[0].fax }}</td>
+              <td></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+  
+      <!-- THEN Data Table -->
+      <h3 class="data-table-title" style="margin-top: 20px;text-align: center; margin-bottom: 10px;">
+        የሰራተኛ ጡረታ መዋጮ ዝርዝር
+      </h3>
+  
+      <table class=" no-padding-body w-full" style="margin-bottom: 40px;">
+        <thead>
+          <tr class="data-table-header">
+            <th  class="w-[40px] text-[12px] font-bold text-center border whitespace-nowrap">NO.</th>
+            <th  class="w-[145px] text-[12px] font-bold text-left border text-black p-0">Employee Full Name</th>
+            <th  class="w-[80px] text-[12px] font-bold text-left border p-0">Tin Number</th>
+            <th  class="w-[80px] text-[12px] font-medium text-left border p-0">Date of Hire (G.C)</th>
+            <th class="w-[80px] text-[12px] font-medium text-left border p-0">Basic Salary</th>
+            <th class="w-[80px] text-[12px] font-medium text-left border p-0">Employee Pension (7%)</th>
+            <th  class="w-[80px] text-[12px] font-medium text-center border p-0">Company Pension (11%)</th>
+            <th class="w-[80px] text-[12px] font-medium text-left border p-0">Total Pension (18%)</th>
+            <th  class="w-[80px] text-[12px] font-medium text-left border p-0">Signature</th>
+          </tr>
+          
+        </thead>
+        <tbody>
+          {% for (var i = start; i < end; i++) { %}
+            {%
                 total_basic_salary += data[i].basic_salary || 0;
                 total_employee_pension += data[i].employee_pension || 0;
                 total_company_pension += data[i].company_pension || 0;
                 total_combined_pension += data[i].total_pension || 0;
-        %}
-        <tr>
-            <td>{{ i + 1 }}</td>
-            <td>{{ data[i].employee_name }}</td>
-            <td>{{ data[i].tin_number }}</td>
-            <td>{{ frappe.datetime.str_to_user(data[i].date_of_hire) }}</td>
-            <td>{{ format_currency(data[i].basic_salary) }}</td>
-            <td>{{ format_currency(data[i].employee_pension) }}</td>
-            <td>{{ format_currency(data[i].company_pension) }}</td>
-            <td>{{ format_currency(data[i].total_pension) }}</td>
-            <td>{{ data[i].signature }}</td>
-        </tr>
-        {% } %}
-    </tbody>
+            %}
+            <tr>
+              <td class="text-sm text-left border">{{ i + 1 }}</td>
+              <td class="text-[12px] text-left border p-0">{{ data[i].employee_name }}</td>
+              <td class="text-[12px] text-left border p-0">{{ data[i].tin_number }}</td>
+              <td class="text-[12px] text-left border p-0">{{ frappe.datetime.str_to_user(data[i].date_of_hire) }}</td>
+              <td class="text-[12px] text-right border p-0">{{ format_currency(data[i].basic_salary.toFixed(2)) }}</td>
+              <td class="text-[12px] text-right border p-0">{{ format_currency(data[i].employee_pension.toFixed(2)) }}</td>
+              <td class="text-[12px] text-right border p-0">{{ format_currency(data[i].company_pension.toFixed(2)) }}</td>
+              <td class="text-[12px] text-right border p-0">{{ format_currency(data[i].total_pension.toFixed(2)) }}</td>
+              <td class="text-[12px] text-right border p-0">{{ data[i].signature }}</td>
+              
+            </tr>
+          {% } %}
+        </tbody>
+        {% if page == page_count - 1 %}
     <tfoot>
-        <!-- Spacer row to add visual gap -->
         <tr>
             <td colspan="9" style="height: 5px; border: none;"></td>
         </tr>
@@ -193,149 +271,253 @@
             <th></th>
         </tr>
     </tfoot>
-    
-</table>
-<div style="display: flex; justify-content: space-between; margin-top: 50px; gap: 20px;">
-    <!-- Left: Summary Table (Label and Data Side by Side) -->
-    <div style="width: 30%;">
-        <table style="width: 100%; border-collapse: collapse; border: 1px solid #ddd;">
-            <thead>
-                <tr>
-                    <th colspan="2" style="text-align: center; padding: 10px; background-color: #f1f1f1; border: 1px solid #ddd;">
-                        የወሩ የተጠቃለለ ሂሳብ
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td style="padding: 8px; border: 1px solid #ddd;"><strong>Total Employees</strong></td>
-                    <td style="padding: 8px; border: 1px solid #ddd;">{{ data.length }}</td>
-                </tr>
-                <tr>
-                    <td style="padding: 8px; border: 1px solid #ddd;"><strong>Total Basic Salary</strong></td>
-                    <td style="padding: 8px; border: 1px solid #ddd;">{{ format_currency(total_basic_salary) }}</td>
-                </tr>
-                <tr>
-                    <td style="padding: 8px; border: 1px solid #ddd;"><strong>Total Employee Pension</strong></td>
-                    <td style="padding: 8px; border: 1px solid #ddd;">{{ format_currency(total_employee_pension) }}</td>
-                </tr>
-                <tr>
-                    <td style="padding: 8px; border: 1px solid #ddd;"><strong>Total Company Pension</strong></td>
-                    <td style="padding: 8px; border: 1px solid #ddd;">{{ format_currency(total_company_pension) }}</td>
-                </tr>
-                <tr>
-                    <td style="padding: 8px; border: 1px solid #ddd;"><strong>Total Pension</strong></td>
-                    <td style="padding: 8px; border: 1px solid #ddd;">{{ format_currency(total_combined_pension) }}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <!-- Center: See Attached Message -->
-    <div style="width: 30%; text-align: center; align-self: top;">
-        <h3 style="font-size: 16px; border-bottom: 1px solid #ccc; padding-bottom: 5px;">Employee Leaving This Month</h3>
-        <p style="margin-top: 30px; font-style: italic; color: #444;">See the attached file.</p>
-    </div>
-
-    <!-- Right: Bureau Section -->
-    <div style="width: 35%;">
-        <table style="width: 100%; border-collapse: collapse; border: 1px solid #ddd;">
-            <thead>
-                <tr>
-                    <th colspan="2" style="text-align: center; padding: 10px; background-color: #f1f1f1; border: 1px solid #ddd;">
-                        For Bureau Service Only
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td style="padding: 8px; border: 1px solid #ddd;width: 50%;">Paid Day</td>
-                    <td style="padding: 8px; border: 1px solid #ddd;width: 50%;"></td>
-                </tr>
-                <tr>
-                    <td style="padding: 8px; border: 1px solid #ddd;width: 50%;">Receipt No</td>
-                    <td style="padding: 8px; border: 1px solid #ddd;width: 50%;"></td>
-                </tr>
-                <tr>
-                    <td style="padding: 8px; border: 1px solid #ddd;width: 50%;">Paid Amount</td>
-                    <td style="padding: 8px; border: 1px solid #ddd;width: 50%;"></td>
-                </tr>
-                <tr>
-                    <td style="padding: 8px; border: 1px solid #ddd;width: 50%;">Check Number</td>
-                    <td style="padding: 8px; border: 1px solid #ddd;width: 50%;"></td>
-                </tr>
-                <tr>
-                    <td style="padding: 8px; border: 1px solid #ddd;width: 50%;">Cashier Name</td>
-                    <td style="padding: 8px; border: 1px solid #ddd;width: 50%;"></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
-
-<div style="margin-top: 10px; font-size: 12px; padding-top: 10px;">
-    <!-- Acknowledgment Text Box -->
-   <!-- Four Column Table (based on scanned document) -->
-  <!-- Title -->
-<div style="text-align: center; font-weight: bold; font-size: 14px; margin-top: 5px;">
-    ክፍል5.የትክክለኛነት ማረጋገጫ
-</div>
-<table style="width: 100%; border-collapse: collapse; font-size: 12px;">
-    <tr>
-        <!-- Column 1: Amharic Paragraph (Reduced width) -->
-        <td style="width: 35%; border: 1px solid black; padding: 10px;">
-            በላይ የተገለጸው ማስታወቂያና የተሰጠው መረጃ በሙሉ የተሞላና ትክክለኛ መሆኑን አረጋግጣለው። ትክክለኛ ያልሆነ መረጃ ማቅረብ በግብር ህጎችም ሆነ 
-            በወንጀለኛ መቅጫ ህግ የሚያስቀጣ መሆኑን እገነዘባለው።
-        </td>
-
-        <!-- Column 2: Taxpayer Info -->
-        <td style="width: 25%; border: 1px solid black; padding: 6px; font-size: 14px; line-height: 1.4;">
-            የግብር ከፋይ/ህጋዊ ወኪሉ<br>
-            <span style="display: block;">ስም፡ <span style="display: inline-block; border-bottom: 1px solid black; width: 100px;"></span></span>
-            <span style="display: block; white-space: nowrap;">
-                ፊርማ፡ <span style="display: inline-block; border-bottom: 1px solid black; width: 100px;"></span>
-                ቀን፡ <span style="display: inline-block; border-bottom: 1px solid black; width: 100px;"></span>
-            </span>
-        </td>
-
-        <!-- Column 3: Stamp (Centered) -->
-        <td style="width: 15%; border: 1px solid black; padding: 10px; text-align: center; vertical-align: middle;">
-            ማህተም
-        </td>
-
-        <!-- Column 4: Authority Info -->
-        <td style="width: 25%; border: 1px solid black; padding: 6px; font-size: 14px; line-height: 1.4;">
-            <span style="display: block;">የግብር ባለስልጣን ስም፡ <span style="display: inline-block; border-bottom: 1px solid black; width: 100px;"></span></span>
-            <span style="display: block;">ፊርማ፡ <span style="display: inline-block; border-bottom: 1px solid black; width: 100px;"></span></span>
-            <span style="display: block;">ቀን፡ <span style="display: inline-block; border-bottom: 1px solid black; width: 100px;"></span></span>
-        </td>
-    </tr>
-</table>
-
-
-</div>
-
-<div style="margin-top: 30px; font-size: 12px; padding-top: 15px;">
-    <!-- Acknowledgment Text -->
-   
-    <!-- Footer Section -->
-    <div style="display: flex; justify-content: space-between;">
-        <div style="width: 33%;">
+    {% endif %}
+      </table>
+      <!-- FOOTER repeated on every page except last -->
+      {% if page < page_count - 1 %}
+      <div class="footer-on-every-page">
+        <div style="display: flex; justify-content: space-between;">
+          <div style="width: 33%;">
             <strong>Name of Payer:</strong> ___________________________<br>
             <strong>የድርጅቱ ከፋይ/ሕጋዊ ወኪል ስም</strong>
-        </div>
-        <div style="width: 33%;">
+          </div>
+          <div style="width: 33%;">
             <strong>Signature:</strong> ___________________________<br>
             <strong>ፊርማ</strong>
-        </div>
-        <div style="width: 33%;">
+          </div>
+          <div style="width: 33%;">
             <strong>Date:</strong> ___________________________<br>
             <strong>ቀን</strong>
+          </div>
         </div>
-    </div>
+      </div>
+      {% endif %}
+
+      <!-- === SPECIAL LAST PAGE CONTENT === -->
+      {% if page == page_count - 1 %}
+      <div class="last-page-container" style="page-break-inside: avoid;"> 
+        <div class="fixed-header bg-white text-sm">
+          <div class="flex w-full border border-black h-32 items-center">
+      
+            <!-- Left Logo -->
+            <div class="border-r border-black flex items-center justify-center w-1/6 h-full p-2">
+              <img src="/private/files/Emblem_of_Ethiopia.svg" class="h-full max-h-24 object-contain" />
+            </div>
+      
+            <!-- Federal Government Text -->
+            <div class="border-r border-black p-2 text-center flex flex-col justify-center w-2/5 h-full">
+              <div class="text-xl font-semibold leading-tight">ኢትዮጵያ ፌዴራላዊ ዴሞክራሲያዊ ሪፐብሊክ</div>
+              <div class="text-xl font-semibold leading-tight">የኢትዮጵያ ገቢዎችና ጉምሩክ ባለስልጣን</div>
+            </div>
+      
+            <!-- Pension Form Title -->
+            <div class="border-r border-black p-2 text-center flex flex-col justify-center w-2/5 h-full">
+              <div class="text-base font-semibold leading-snug">የሠንጠረዥ "ሀ" የስራ ግብር ክፍያ ማስታወቂያ ቅፅ (ለቀጣሪዎች)</div>
+              <div class="text-base font-medium leading-snug">(የገቢ ግብር አዋጅ ቁጥር 286/1996 እና ገቢ ግብር ደንብ ቁጥር 78/1994)</div>
+            </div>
+      
+            <!-- Right Logo -->
+            <div class="flex items-center justify-center w-1/6 h-full p-2">
+              <img src="/private/files/addis ababa transparent logo.png" class="h-full max-h-24 object-contain" />
+            </div>
+      
+          </div>
+        </div>
+      
+        <div class="company-info-table">
+          <h1 class="company-info-title" style="text-align:center; margin-top: 20px; margin-bottom: 10px;">
+            ክፍል 1.የግብር ከፋይ ዝርዝር መረጃ
+          </h1>
+      
+          <table class="main-table" style="margin-bottom: 20px;">
+            <tr>
+              <th>የድርጅቱ ስም</th>
+              <th>የድርጅቱ የግብር ከፋይ መለያ ቁጥር</th>
+              <th>የግብር ሂሳብ ቁጥር</th>
+              <th>የክፍያ ጊዜ</th>
+              <th colspan="2">Page List</th>
+            </tr>
+            <tr>
+              <td>{{ data[0].company_name }}</td>
+              <td>{{ data[0].organization_tin_number }}</td>
+              <td>{{ data[0].tax_account_number }}</td>
+              <td>{{ data[0].period_for_payment }}</td>
+              <td colspan="2">Page {{ page + 1 }} of {{ page_count }}</td>
+            </tr>
+            <tr>
+              <th>2.a ክልል</th>
+              <th colspan="2">2.b ዞን/ክፍለ ከተማ</th>
+              <th colspan="2">5 የግብር ሰብሳቢ ቢሮ ስም</th>
+              <th>የሰነድ ቁጥር (ለቢሮ አገልግሎት ብቻ)</th>
+            </tr>
+            <tr>
+              <td>{{ data[0].region }}</td>
+              <td colspan="2">{{ data[0].zonesub_district }}</td>
+              <td colspan="2">{{ data[0].name_of_the_tax_collector }}</td>
+              <td>{{ data[0].document_number_for_office_use_only }}</td>
+            </tr>
+            <tr>
+              <th>2.c ወረዳ</th>
+              <th>2.d የቀበሌ/ገበሬዎች ማህበር</th>
+              <th>2.e የቤት ቁጥር</th>
+              <th>6 ስልክ ቁጥር</th>
+              <th>7 ፋክስ ቁጥር</th>
+              <th></th>
+            </tr>
+            <tr>
+              <td>{{ data[0].woreda }}</td>
+              <td>{{ data[0].kebele }}</td>
+              <td>{{ data[0].house_number }}</td>
+              <td>{{ data[0].phone }}</td>
+              <td>{{ data[0].fax }}</td>
+              <td></td>
+            </tr>
+          </table>
+        </div>
+        <div class="no-break "  style="display: flex; justify-content: space-between; margin-top: 50px; gap: 20px;">
+            <!-- Left: Summary Table (Label and Data Side by Side) -->
+            <div style="width: 30%;">
+                <table style="width: 100%; border-collapse: collapse; border: 1px solid #ddd;">
+                    <thead>
+                        <tr>
+                            <th colspan="2" style="text-align: center; padding: 10px; background-color: #f1f1f1; border: 1px solid #ddd;">
+                                የወሩ የተጠቃለለ ሂሳብ
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding: 8px; border: 1px solid #ddd;"><strong>Total Employees</strong></td>
+                            <td style="padding: 8px; border: 1px solid #ddd;">{{ data.length }}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px; border: 1px solid #ddd;"><strong>Total Basic Salary</strong></td>
+                            <td style="padding: 8px; border: 1px solid #ddd;">{{ format_currency(total_basic_salary) }}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px; border: 1px solid #ddd;"><strong>Total Employee Pension</strong></td>
+                            <td style="padding: 8px; border: 1px solid #ddd;">{{ format_currency(total_employee_pension) }}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px; border: 1px solid #ddd;"><strong>Total Company Pension</strong></td>
+                            <td style="padding: 8px; border: 1px solid #ddd;">{{ format_currency(total_company_pension) }}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px; border: 1px solid #ddd;"><strong>Total Pension</strong></td>
+                            <td style="padding: 8px; border: 1px solid #ddd;">{{ format_currency(total_combined_pension) }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        
+            <!-- Center: See Attached Message -->
+            <div style="width: 30%; text-align: center; align-self: top;">
+                <h3 style="font-size: 16px; border-bottom: 1px solid #ccc; padding-bottom: 5px;">Employee Leaving This Month</h3>
+                <p style="margin-top: 30px; font-style: italic; color: #444;">See the attached file.</p>
+            </div>
+        
+            <!-- Right: Bureau Section -->
+            <div style="width: 35%;">
+                <table style="width: 100%; border-collapse: collapse; border: 1px solid #ddd;">
+                    <thead>
+                        <tr>
+                            <th colspan="2" style="text-align: center; padding: 10px; background-color: #f1f1f1; border: 1px solid #ddd;">
+                                For Bureau Service Only
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding: 8px; border: 1px solid #ddd;width: 50%;">Paid Day</td>
+                            <td style="padding: 8px; border: 1px solid #ddd;width: 50%;"></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px; border: 1px solid #ddd;width: 50%;">Receipt No</td>
+                            <td style="padding: 8px; border: 1px solid #ddd;width: 50%;"></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px; border: 1px solid #ddd;width: 50%;">Paid Amount</td>
+                            <td style="padding: 8px; border: 1px solid #ddd;width: 50%;"></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px; border: 1px solid #ddd;width: 50%;">Check Number</td>
+                            <td style="padding: 8px; border: 1px solid #ddd;width: 50%;"></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px; border: 1px solid #ddd;width: 50%;">Cashier Name</td>
+                            <td style="padding: 8px; border: 1px solid #ddd;width: 50%;"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+      
+        <div class="no-break "  style="margin-top: 10px; font-size: 12px; padding-top: 10px;">
+            <!-- Acknowledgment Text Box -->
+           <!-- Four Column Table (based on scanned document) -->
+          <!-- Title -->
+        <div style="text-align: center; font-weight: bold; font-size: 14px; margin-top: 5px;">
+            ክፍል5.የትክክለኛነት ማረጋገጫ
+        </div>
+        <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+            <tr>
+                <!-- Column 1: Amharic Paragraph (Reduced width) -->
+                <td style="width: 35%; border: 1px solid black; padding: 10px;">
+                    በላይ የተገለጸው ማስታወቂያና የተሰጠው መረጃ በሙሉ የተሞላና ትክክለኛ መሆኑን አረጋግጣለው። ትክክለኛ ያልሆነ መረጃ ማቅረብ በግብር ህጎችም ሆነ 
+                    በወንጀለኛ መቅጫ ህግ የሚያስቀጣ መሆኑን እገነዘባለው።
+                </td>
+        
+                <!-- Column 2: Taxpayer Info -->
+                <td style="width: 25%; border: 1px solid black; padding: 6px; font-size: 14px; line-height: 1.4;">
+                    የግብር ከፋይ/ህጋዊ ወኪሉ<br>
+                    <span style="display: block;">ስም፡ <span style="display: inline-block; border-bottom: 1px solid black; width: 100px;"></span></span>
+                    <span style="display: block; white-space: nowrap;">
+                        ፊርማ፡ <span style="display: inline-block; border-bottom: 1px solid black; width: 100px;"></span>
+                        ቀን፡ <span style="display: inline-block; border-bottom: 1px solid black; width: 100px;"></span>
+                    </span>
+                </td>
+        
+                <!-- Column 3: Stamp (Centered) -->
+                <td style="width: 15%; border: 1px solid black; padding: 10px; text-align: center; vertical-align: middle;">
+                    ማህተም
+                </td>
+        
+                <!-- Column 4: Authority Info -->
+                <td style="width: 25%; border: 1px solid black; padding: 6px; font-size: 14px; line-height: 1.4;">
+                    <span style="display: block;">የግብር ባለስልጣን ስም፡ <span style="display: inline-block; border-bottom: 1px solid black; width: 100px;"></span></span>
+                    <span style="display: block;">ፊርማ፡ <span style="display: inline-block; border-bottom: 1px solid black; width: 100px;"></span></span>
+                    <span style="display: block;">ቀን፡ <span style="display: inline-block; border-bottom: 1px solid black; width: 100px;"></span></span>
+                </td>
+            </tr>
+        </table>
+        
+        
+        </div>
+      
+      <div class="footer-last-page" style="margin-top: 10px; font-size: 12px; padding-top: 10px;">
+        <div style="display: flex; justify-content: space-between;">
+          <div style="width: 33%;">
+            <strong>Name of Payer:</strong> ___________________________<br>
+            <strong>የድርጅቱ ከፋይ/ሕጋዊ ወኪል ስም</strong>
+          </div>
+          <div style="width: 33%;">
+            <strong>Signature:</strong> ___________________________<br>
+            <strong>ፊርማ</strong>
+          </div>
+          <div style="width: 33%;">
+            <strong>Date:</strong> ___________________________<br>
+            <strong>ቀን</strong>
+          </div>
+        </div>
+      </div>
+      </div> 
+    
+      {% endif %}
+   {% } %}
+  </div>
+</div>
 </div>
 
-</div>
 
 {% else %}
 <p>No data available for the selected filters.</p>
