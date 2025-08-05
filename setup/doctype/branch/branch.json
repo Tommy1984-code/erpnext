@@ -17,8 +17,7 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Branch Region",
-   "options": "\nAddis Ababa\nOromia Region\nAmhara Region\nTigray Region\nSidama Region\nDire Dawa\nCentral Ethiopia Regional State",
-   "reqd": 1
+   "options": "\nAddis Ababa\nOromia Region\nAmhara Region\nTigray Region\nSidama Region\nDire Dawa\nCentral Ethiopia Regional State"
   },
   {
    "fieldname": "branch_name",
@@ -30,7 +29,7 @@
  "icon": "fa fa-code-fork",
  "idx": 1,
  "links": [],
- "modified": "2025-05-07 12:07:01.686515",
+ "modified": "2025-07-28 15:46:16.628939",
  "modified_by": "Administrator",
  "module": "Setup",
  "name": "Branch",

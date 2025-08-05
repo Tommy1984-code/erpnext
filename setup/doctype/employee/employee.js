@@ -128,6 +128,9 @@ frappe.ui.form.on("Employee", {
 		department: function (frm) {
 			// clear section when department changes
 			frm.set_value("section", null);
+			frm.set_value("designation", null);
+
+			// Filter for section based on department
 			frm.set_query("section", function () {
 				if (!frm.doc.department) return {};
 				return {
@@ -136,12 +139,17 @@ frappe.ui.form.on("Employee", {
 					}
 				};
 			});
+			// Filter for designation based on department
+			frm.set_query("designation", function () {
+				if (!frm.doc.department) return {};
+				return {
+					filters: {
+						department: frm.doc.department
+					}
+				};
+			});
 		  },
-		
-		//   section: function (frm) {
-		// 	// optional: additional logic if needed on section select
-		//   },
-	
+
 	
 	onload: function (frm) {
 		frm.trigger('set_earning_deduction_component')//my triger the filter

@@ -129,6 +129,8 @@
   "profile_tab",
   "section_break_kghb",
   "certificate",
+  "column_break_bmkg",
+  "document",
   "section_break_tchi",
   "bio",
   "educational_qualification",
@@ -1052,6 +1054,15 @@
    "fieldtype": "Select",
    "label": "Pension Eligibility",
    "options": "Pension Grant\nOpting Out of Pension"
+  },
+  {
+   "fieldname": "column_break_bmkg",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "document",
+   "fieldtype": "Attach",
+   "label": "Document"
   }
  ],
  "icon": "fa fa-user",
@@ -1059,7 +1070,7 @@
  "image_field": "image",
  "is_tree": 1,
  "links": [],
- "modified": "2025-07-21 08:10:14.754333",
+ "modified": "2025-07-28 09:22:38.667983",
  "modified_by": "Administrator",
  "module": "Setup",
  "name": "Employee",

@@ -275,7 +275,7 @@ class Employee(NestedSet):
 			frappe.cache().hdel("employees_with_number", cell_number)
 			frappe.cache().hdel("employees_with_number", prev_number)
 
-	#my added code for data import tool not to override the existing one
+	# My added code for data import tool not to override the existing one
 	def merge_salary_details(self):
 		if not self.name:
 			return
@@ -283,37 +283,84 @@ class Employee(NestedSet):
 		try:
 			existing = frappe.get_doc("Employee", self.name)
 		except frappe.DoesNotExistError:
-			return  # New employee; nothing to merge
+			return
+
+		# List of fields from Salary Component doctype (exactly as you provided)
+		salary_component_fields = [
+			"salary_component",
+			"salary_component_abbr",
+			"type",
+			"description",
+			"depends_on_payment_days",
+			"is_tax_applicable",
+			"deduct_full_tax_on_selected_payroll_date",
+			"variable_based_on_taxable_salary",
+			"is_income_tax_component",
+			"exempted_from_income_tax",
+			"round_to_the_nearest_integer",
+			"statistical_component",
+			"do_not_include_in_total",
+			"remove_if_zero_valued",
+			"disabled",
+			"loan_component",
+			"default_component",
+			"condition",
+			"amount_based_on_formula",
+			"formula",
+			"amount",
+			"round_to_the_nearest_integer",
+		]
+
+		# Child table only fields (adjust if needed)
+		child_only_fields = ["prorate", "payment_type", "amount"]
 
 		def merge_table(table_name):
 			existing_rows = {row.salary_component: row for row in getattr(existing, table_name)}
 			imported_rows = {row.salary_component: row for row in getattr(self, table_name)}
 
-			# Keep existing components that are not in the import
 			final_rows = []
 
+			# Keep existing that are not overwritten by import
 			for comp, row in existing_rows.items():
 				if comp not in imported_rows:
 					final_rows.append(row)
 
-			# Add/overwrite imported rows
+			# For imported rows, fetch Salary Component fields and merge with child-only fields from import
 			for comp, row in imported_rows.items():
-				final_rows.append(row)
+				# Fetch salary component fields from Salary Component doctype
+				sc_data = frappe.get_all("Salary Component",
+					filters={"salary_component": comp},
+					fields=salary_component_fields,
+					limit=1
+				)
+				sc_dict = sc_data[0] if sc_data else {}
+
+				# Build new dict with Salary Component fields (sc_dict) + child table fields (row)
+				new_row = {}
+
+				# Add all fields from Salary Component, mapping abbr correctly
+				for f in salary_component_fields:
+					value = sc_dict.get(f)
+					if f == "salary_component_abbr":
+						new_row["abbr"] = value  # map to correct field in child table
+					else:
+						new_row[f] = value
+
+				# Override child-only fields from imported row
+				for f in child_only_fields:
+					new_row[f] = getattr(row, f, None)
+
+				final_rows.append(frappe._dict(new_row))
 
 			# Clear and re-append
 			self.set(table_name, [])
 			for row in final_rows:
-				#make sure to return to this back their is unfinished logic 
-				self.append(table_name, {
-					"salary_component": row.salary_component,
-					
-					"amount": row.amount
-				})
+				self.append(table_name, row)
 
 		merge_table("earnings")
 		merge_table("deductions")
-    
-	#my code added 
+
+	# My code added
 	def get_abbr_for_component(self, component):
 		return frappe.db.get_value("Salary Component", component, "abbr") or component[:3].upper()
 
