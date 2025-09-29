@@ -14,6 +14,8 @@ from frappe.utils.nestedset import NestedSet
 from hrms.payroll.utils import sanitize_expression
 
 from erpnext.utilities.transaction_base import delete_events
+from frappe.model.naming import make_autoname
+
 
 
 class EmployeeUserDisabledError(frappe.ValidationError):
@@ -30,7 +32,13 @@ class Employee(NestedSet):
 	def autoname(self):
 		set_name_by_naming_series(self)
 		self.employee = self.name
+		
+		
+		
+
+		
 	# adding for the data import for protecting the exsting recodrd
+
 	def before_save(self):
 		if frappe.flags.in_import:
 			self.merge_salary_details()

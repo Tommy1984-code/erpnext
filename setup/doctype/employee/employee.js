@@ -457,3 +457,45 @@ frappe.ui.form.on("Salary Detail", {
 
 
 
+frappe.ui.form.on("Employee", {
+    company: function(frm) {
+        set_girum_naming_series(frm);
+    },
+    department: function(frm) {
+        set_girum_naming_series(frm);
+    },
+    before_save: function(frm) {
+        set_girum_naming_series(frm);
+    }
+});
+
+function set_girum_naming_series(frm) {
+    if (frm.doc.company !== "Girum Hospital") return;
+
+    let dept_series_map = {
+        "nursing": "GHN",
+        "medical": "GHM",
+        "laboratory": "GHL",
+        "pharmacy": "GHP",
+        "radiology/x-ray, u/s": "GHR"
+    };
+
+    let selected_series = "GHA"; // default for other departments
+
+    if (frm.doc.department) {
+        let dept = frm.doc.department.toLowerCase().trim();
+        for (let key in dept_series_map) {
+            if (dept.includes(key)) {
+                selected_series = dept_series_map[key];
+                break;
+            }
+        }
+    }
+
+    frm.set_value("naming_series", selected_series);
+}
+
+
+
+
+

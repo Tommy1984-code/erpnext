@@ -15,7 +15,7 @@
  "icon": "accounting",
  "idx": 0,
  "indicator_color": "",
- "is_hidden": 1,
+ "is_hidden": 0,
  "label": "Accounting",
  "links": [
   {
@@ -586,7 +586,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-07-22 09:16:26.800456",
+ "modified": "2025-08-22 14:56:46.240680",
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Accounting",

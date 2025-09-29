@@ -65,9 +65,10 @@ def get_data(filters=None):
 
     if not (from_date and to_date):
         frappe.throw("Please set both From Date and To Date")
+    
+    employee_monthly_data = {}
 
     months = get_months_in_range(from_date, to_date)
-    data = []
 
     for month in months:
         month = getdate(month)
@@ -79,9 +80,6 @@ def get_data(filters=None):
                 e.employee_name,
                 e.employee_tin_no,
                 e.date_of_joining,
-                e.department,
-                e.grade,
-                ss.name AS salary_slip,
                 ss.end_date,               
                 sd.amount AS basic_salary
             FROM `tabSalary Slip` ss
@@ -102,54 +100,59 @@ def get_data(filters=None):
             query += " AND e.company = %(company)s"
             conditions["company"] = company
         if employee:
-            query += "AND e.employee =%(employee)s"
+            query += " AND e.employee = %(employee)s"
             conditions["employee"] = employee
-
         if department:
             query += " AND e.department = %(department)s"
             conditions["department"] = department
-
         if grade:
             query += " AND e.grade = %(grade)s"
             conditions["grade"] = grade
-
         if branch:
-            query += "AND e.branch = %(branch)s"
+            query += " AND e.branch = %(branch)s"
             conditions["branch"] = branch
 
         results = frappe.db.sql(query, conditions, as_dict=True)
         employee_latest_slip = {}
 
         for row in results:
-            employee_id = row.employee_id  # Use employee_id to track unique employees
-            
-            # If this employee is not in the dictionary or has a later end_date, store/update the entry
+            employee_id = row.employee_id
+            # FIX: track latest slip per employee in this month
             if employee_id not in employee_latest_slip:
                 employee_latest_slip[employee_id] = row
             else:
-                existing_row = employee_latest_slip[employee_id]
-                if row.end_date > existing_row['end_date']:  # Compare end_date to get the latest
+                if row.end_date > employee_latest_slip[employee_id]['end_date']:
                     employee_latest_slip[employee_id] = row
 
-        # Now process the latest salary slip for each employee
+        # Process latest slip per employee for this month
         for employee_id, row in employee_latest_slip.items():
-            base_salary = row.basic_salary
+            base_salary = row.basic_salary  # BASE from submitted Salary Slip (fixed)
+
+            # FIX: Only initialize employee entry once
+            if employee_id not in employee_monthly_data:
+                employee_monthly_data[employee_id] = {
+                    "employee_name": row.employee_name,
+                    "tin_number": row.employee_tin_no,
+                    "date_of_hire": row.date_of_joining,
+                    "basic_salary": base_salary,  # Keep first month's base (or latest if you prefer)
+                    "employee_pension": 0,
+                    "company_pension": 0,
+                    "total_pension": 0,
+                    "signature": "",
+                }
+
+            # Calculate pension based on Salary Slip base for this month
             employee_pension = base_salary * 0.07
             company_pension = base_salary * 0.11
             total_pension = employee_pension + company_pension
 
-            data.append({
-                "employee_name": row.employee_name,
-                "tin_number": row.employee_tin_no,
-                "date_of_hire": row.date_of_joining,
-                "basic_salary": base_salary,
-                "employee_pension": employee_pension,
-                "company_pension": company_pension,
-                "total_pension": total_pension,
-                "signature": "",
-                "month": month.strftime("%B %Y")
-            })
+            # FIX: Accumulate pensions across months
+            employee_monthly_data[employee_id]["employee_pension"] += employee_pension
+            employee_monthly_data[employee_id]["company_pension"] += company_pension
+            employee_monthly_data[employee_id]["total_pension"] += total_pension
 
+    # Return list of employees with summed pensions
+    data = list(employee_monthly_data.values())
     return data
 
 def get_base_from_salary_slip(employee_id, month):
