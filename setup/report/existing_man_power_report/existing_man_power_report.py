@@ -69,10 +69,18 @@ def get_data(filters=None):
             "date_of_birth",
             "department",
             "grade",
-            "employment_type"
+            "employment_type",
+            "relieving_date" 
         ],
         order_by="department asc, employee_name asc"
     )
+
+    employees = [
+        emp for emp in employees
+        if emp.date_of_hire and emp.date_of_hire <= to_date
+        and (not emp.relieving_date or emp.relieving_date >= from_date)
+    ]
+
 
     data = []
     current_department = None

@@ -53,7 +53,6 @@ def get_columns():
 		{"label":"Signature","fieldname":"signature","fieldtype":"Data","width": 100},
 	]
 
-
 def get_data(filters=None):
     from_date = filters.get("from_date")
     to_date = filters.get("to_date")
