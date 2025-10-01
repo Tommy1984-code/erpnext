@@ -26,6 +26,8 @@ def get_columns():
 		{"label":"Termination Date","fieldname":"relieving_date","fieldtype":"Date","width":120},
 		{"label":"Salary","fieldname":"basic_salary","fieldtype":"Currency","width":120},
 		{"label":"Term. Salary","fieldname":"termination_salary","fieldtype":"Currency","width":120},
+        {"label":"Gross Severance","fieldname":"gross_severance","fieldtype":"Currency","width":120},
+        {"label":"Gross Annual Leave","fieldname":"gross_annual_leave","fieldtype":"Currency","width":120}, 
 		{"label":"Department","fieldname":"department","fieldtype":"data","width": 200},
 		{"label":"Employment Type","fieldname":"employment_type","fieldtype":"data","width": 120},
 		
@@ -119,8 +121,12 @@ def get_data(filters=None):
             }
 
             termination_salary = earnings.get('B') or earnings.get('VB') or 0
+            gross_severance = earnings.get('sevr') or 0  
+            gross_annual_leave = earnings.get('annlev') or 0
 
         emp['termination_salary'] = termination_salary
+        emp['gross_severance'] = gross_severance
+        emp['gross_annual_leave'] = gross_annual_leave
         result.append(emp)
 
     return result

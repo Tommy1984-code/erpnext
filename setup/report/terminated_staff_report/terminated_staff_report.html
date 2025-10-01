@@ -35,51 +35,64 @@
   For the period: {{ fromMonth }} {{ fromYear }} - {{ toMonth }} {{ toYear }}
 </div>
 
-<table class="min-w-full table-auto border-collapse border border-gray-300 mt-8">
+<table class="w-full table-fixed border-collapse border border-gray-300 text-[11px] whitespace-nowrap mt-4">
   <thead>
     <tr class="bg-gray-100">
-      <th class="px-4 py-2 text-left border border-gray-300">No.</th>
-      <th class="px-4 py-2 text-left border border-gray-300">ID</th>
-      <th class="px-4 py-2 text-left border border-gray-300">Employee Name</th>
-      <th class="px-4 py-2 text-left border border-gray-300">Gender</th>
-      <th class="px-4 py-2 text-left border border-gray-300">Designation</th>
-      <th class="px-4 py-2 text-left border border-gray-300">Termination Date</th>
-      <th class="px-4 py-2 text-left border border-gray-300">Salary</th>
-      <th class="px-4 py-2 text-left border border-gray-300">Termination Salary</th>
-      <th class="px-4 py-2 text-left border border-gray-300">Department</th>
-      <th class="px-4 py-2 text-left border border-gray-300">Employment Type</th>
+      <th class="px-2 py-1 border border-gray-300 w-[3%]">No.</th>
+      <th class="px-2 py-1 border border-gray-300 w-[8%]">ID</th>
+      <th class="px-2 py-1 border border-gray-300 w-[15%]">Employee Name</th>
+      <th class="px-2 py-1 border border-gray-300 w-[5%]">Gender</th>
+      <th class="px-2 py-1 border border-gray-300 w-[12%]">Designation</th>
+      <th class="px-2 py-1 border border-gray-300 w-[10%]">Termination Date</th>
+      <th class="px-2 py-1 border border-gray-300 w-[7%] text-right">Salary</th>
+      <th class="px-2 py-1 border border-gray-300 w-[7%] text-right">Ter.Salary</th>
+      <th class="px-2 py-1 border border-gray-300 w-[10%] text-right">Gross Severance</th>
+      <th class="px-2 py-1 border border-gray-300 w-[10%] text-right">Gross Annual.lev</th>
+      <th class="px-2 py-1 border border-gray-300 w-[10%]">Department</th>
+      <th class="px-2 py-1 border border-gray-300 w-[10%]">Employment Type</th>
     </tr>
   </thead>
+
   <tbody>
-    {% 
+    {%
       var total_salary = 0;
       var total_termination_salary = 0;
+      var total_gross_severance = 0;
+      var total_gross_annual_leave = 0;
 
       for (var i = 0; i < data.length; i++) {
         total_salary += data[i].basic_salary || 0;
         total_termination_salary += data[i].termination_salary || 0;
+        total_gross_severance += data[i].gross_severance || 0;
+        total_gross_annual_leave += data[i].gross_annual_leave || 0;
     %}
-      <tr class="bg-white">
-        <td class="px-4 py-2 border border-gray-300">{{ i + 1 }}</td>
-        <td class="px-4 py-2 border border-gray-300">{{ data[i].employee_id }}</td>
-        <td class="px-4 py-2 border border-gray-300">{{ data[i].employee_name }}</td>
-        <td class="px-4 py-2 border border-gray-300">{{ data[i].gender }}</td>
-        <td class="px-4 py-2 border border-gray-300">{{ data[i].designation }}</td>
-        <td class="px-4 py-2 border border-gray-300">{{ frappe.datetime.str_to_user(data[i].relieving_date) }}</td>
-        <td class="px-4 py-2 border border-gray-300">{{ data[i].basic_salary }}</td>
-        <td class="px-4 py-2 border border-gray-300">{{ data[i].termination_salary }}</td>
-        <td class="px-4 py-2 border border-gray-300">{{ data[i].department }}</td>
-        <td class="px-4 py-2 border border-gray-300">{{ data[i].employment_type }}</td>
-      </tr>
+    <tr class="bg-white hover:bg-gray-50">
+      <td class="px-2 py-1 border border-gray-300 text-center">{{ i + 1 }}</td>
+      <td class="px-2 py-1 border border-gray-300">{{ data[i].employee_id }}</td>
+      <td class="px-2 py-1 border border-gray-300">{{ data[i].employee_name }}</td>
+      <td class="px-2 py-1 border border-gray-300">{{ data[i].gender }}</td>
+      <td class="px-2 py-1 border border-gray-300">{{ data[i].designation }}</td>
+      <td class="px-2 py-1 border border-gray-300">{{ frappe.datetime.str_to_user(data[i].relieving_date) }}</td>
+      <td class="px-2 py-1 border border-gray-300 text-right">{{ data[i].basic_salary }}</td>
+      <td class="px-2 py-1 border border-gray-300 text-right">{{ data[i].termination_salary }}</td>
+      <td class="px-2 py-1 border border-gray-300 text-right">{{ data[i].gross_severance }}</td>
+      <td class="px-2 py-1 border border-gray-300 text-right">{{ data[i].gross_annual_leave }}</td>
+      <td class="px-2 py-1 text-xs border border-gray-300">{{ data[i].department }}</td>
+      <td class="px-2 py-1 border border-gray-300">{{ data[i].employment_type }}</td>
+    </tr>
     {% } %}
   </tbody>
+
   <tfoot>
-    <tr class="bg-gray-100">
-      <td colspan="6" class="px-4 py-2 text-right font-bold border border-gray-300">Total</td>
-      <td class="px-4 py-2 font-bold border border-gray-300">{{ total_salary }}</td>
-      <td class="px-4 py-2 font-bold border border-gray-300">{{ total_termination_salary }}</td>
-      <td colspan="2" class="px-4 py-2 border border-gray-300"></td>
+    <tr class="bg-gray-100 font-semibold">
+      <td colspan="6" class="px-2 py-1 text-right border border-gray-300">Total</td>
+      <td class="px-2 py-1 text-right border border-gray-300">{{ total_salary }}</td>
+      <td class="px-2 py-1 text-right border border-gray-300">{{ total_termination_salary }}</td>
+      <td class="px-2 py-1 text-right border border-gray-300">{{ total_gross_severance }}</td>
+      <td class="px-2 py-1 text-right border border-gray-300">{{ total_gross_annual_leave }}</td>
+      <td colspan="2" class="px-2 py-1 border border-gray-300"></td>
     </tr>
   </tfoot>
 </table>
+
 {% endif %}
