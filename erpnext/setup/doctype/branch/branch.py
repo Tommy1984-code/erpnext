@@ -14,7 +14,8 @@ class Branch(Document):
 	if TYPE_CHECKING:
 		from frappe.types import DF
 
-		branch: DF.Data
+		branch_name: DF.Data | None
+		branch_region: DF.Literal["", "Addis Ababa", "Oromia Region", "Amhara Region", "Tigray Region", "Sidama Region", "Dire Dawa", "Central Ethiopia Regional State"]
 	# end: auto-generated types
 
 	pass

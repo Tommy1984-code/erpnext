@@ -17,6 +17,7 @@ class Department(NestedSet):
 	if TYPE_CHECKING:
 		from frappe.types import DF
 
+		branch: DF.Link | None
 		company: DF.Link
 		department_name: DF.Data
 		disabled: DF.Check
@@ -32,7 +33,8 @@ class Department(NestedSet):
 	def autoname(self):
 		root = get_root_of("Department")
 		if root and self.department_name != root:
-			self.name = get_abbreviated_name(self.department_name, self.company)
+			# self.name = get_abbreviated_name(self.department_name, self.company)
+			self.name = self.department_name
 		else:
 			self.name = self.department_name
 

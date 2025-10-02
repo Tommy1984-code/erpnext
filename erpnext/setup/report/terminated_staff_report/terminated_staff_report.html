@@ -1,0 +1,98 @@
+{% if data.length %}
+<script src="https://cdn.tailwindcss.com"></script>
+
+<div style="width: 100%; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: flex-start;">
+  <div style="width: 150px; display: flex; justify-content: flex-start;">
+    <img src="/files/company-logo.png" alt="Logo" style="max-height: 60px;">
+  </div>
+
+  <div style="flex: 1; text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+    <h2 style="margin: 0; font-size: 28px; font-weight: 600;">{{ filters.company }}</h2>
+    <h3 style="margin: 4px 0; font-size: 22px;">List of Terminated Staff</h3>
+  </div>
+
+  <div style="width: 200px; font-size: 12px; text-align: right; margin-top: 10px;">
+    {% 
+      var now = new Date();
+      var genDate = now.toLocaleString('default', {
+        year: 'numeric', month: 'long', day: 'numeric',
+        hour: '2-digit', minute: '2-digit'
+      });
+    %}
+    Generated on:<br> {{ genDate }}
+  </div>
+</div>
+
+<div style="text-align: center; margin: 10px 0 20px 0; font-size: 15px;">
+  {% 
+    let from = new Date(filters.from_date);
+    let to = new Date(filters.to_date);
+    let fromMonth = from.toLocaleString('default', { month: 'long' });
+    let toMonth = to.toLocaleString('default', { month: 'long' });
+    let fromYear = from.getFullYear();
+    let toYear = to.getFullYear();
+  %}
+  For the period: {{ fromMonth }} {{ fromYear }} - {{ toMonth }} {{ toYear }}
+</div>
+
+<table class="w-full table-fixed border-collapse border border-gray-300 text-[11px] whitespace-nowrap mt-4">
+  <thead>
+    <tr class="bg-gray-100">
+      <th class="px-2 py-1 border border-gray-300 w-[3%]">No.</th>
+      <th class="px-2 py-1 border border-gray-300 w-[8%]">ID</th>
+      <th class="px-2 py-1 border border-gray-300 w-[15%]">Employee Name</th>
+      <th class="px-2 py-1 border border-gray-300 w-[5%]">Gender</th>
+      <th class="px-2 py-1 border border-gray-300 w-[12%]">Designation</th>
+      <th class="px-2 py-1 border border-gray-300 w-[10%]">Termination Date</th>
+      <th class="px-2 py-1 border border-gray-300 w-[7%] text-right">Salary</th>
+      <th class="px-2 py-1 border border-gray-300 w-[7%] text-right">Ter.Salary</th>
+      <th class="px-2 py-1 border border-gray-300 w-[10%] text-right">Gross Severance</th>
+      <th class="px-2 py-1 border border-gray-300 w-[10%] text-right">Gross Annual.lev</th>
+      <th class="px-2 py-1 border border-gray-300 w-[10%]">Department</th>
+      <th class="px-2 py-1 border border-gray-300 w-[10%]">Employment Type</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {%
+      var total_salary = 0;
+      var total_termination_salary = 0;
+      var total_gross_severance = 0;
+      var total_gross_annual_leave = 0;
+
+      for (var i = 0; i < data.length; i++) {
+        total_salary += data[i].basic_salary || 0;
+        total_termination_salary += data[i].termination_salary || 0;
+        total_gross_severance += data[i].gross_severance || 0;
+        total_gross_annual_leave += data[i].gross_annual_leave || 0;
+    %}
+    <tr class="bg-white hover:bg-gray-50">
+      <td class="px-2 py-1 border border-gray-300 text-center">{{ i + 1 }}</td>
+      <td class="px-2 py-1 border border-gray-300">{{ data[i].employee_id }}</td>
+      <td class="px-2 py-1 border border-gray-300">{{ data[i].employee_name }}</td>
+      <td class="px-2 py-1 border border-gray-300">{{ data[i].gender }}</td>
+      <td class="px-2 py-1 border border-gray-300">{{ data[i].designation }}</td>
+      <td class="px-2 py-1 border border-gray-300">{{ frappe.datetime.str_to_user(data[i].relieving_date) }}</td>
+      <td class="px-2 py-1 border border-gray-300 text-right">{{ data[i].basic_salary }}</td>
+      <td class="px-2 py-1 border border-gray-300 text-right">{{ data[i].termination_salary }}</td>
+      <td class="px-2 py-1 border border-gray-300 text-right">{{ data[i].gross_severance }}</td>
+      <td class="px-2 py-1 border border-gray-300 text-right">{{ data[i].gross_annual_leave }}</td>
+      <td class="px-2 py-1 text-xs border border-gray-300">{{ data[i].department }}</td>
+      <td class="px-2 py-1 border border-gray-300">{{ data[i].employment_type }}</td>
+    </tr>
+    {% } %}
+  </tbody>
+
+  <tfoot>
+    <tr class="bg-gray-100 font-semibold">
+      <td colspan="6" class="px-2 py-1 text-right border border-gray-300">Total</td>
+      <td class="px-2 py-1 text-right border border-gray-300">{{ total_salary }}</td>
+      <td class="px-2 py-1 text-right border border-gray-300">{{ total_termination_salary }}</td>
+      <td class="px-2 py-1 text-right border border-gray-300">{{ total_gross_severance }}</td>
+      <td class="px-2 py-1 text-right border border-gray-300">{{ total_gross_annual_leave }}</td>
+      <td colspan="2" class="px-2 py-1 border border-gray-300"></td>
+    </tr>
+  </tfoot>
+</table>
+
+{% endif %}

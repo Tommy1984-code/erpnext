@@ -22,6 +22,7 @@
   "gender",
   "date_of_birth",
   "salutation",
+  "nationality",
   "column_break1",
   "date_of_joining",
   "image",
@@ -33,13 +34,18 @@
   "company_details_section",
   "company",
   "department",
+  "employment_type",
   "employee_number",
   "column_break_25",
   "designation",
   "reports_to",
+  "section",
   "column_break_18",
   "branch",
+  "branch_region",
+  "grade",
   "employment_details",
+  "job_applicant",
   "scheduled_confirmation_date",
   "column_break_32",
   "final_confirmation_date",
@@ -49,6 +55,7 @@
   "date_of_retirement",
   "contact_details",
   "cell_number",
+  "resident_id",
   "column_break_40",
   "personal_email",
   "company_email",
@@ -72,21 +79,47 @@
   "attendance_device_id",
   "column_break_44",
   "holiday_list",
+  "default_shift",
+  "approvers_section",
+  "expense_approver",
+  "leave_approver",
+  "column_break_45",
+  "shift_request_approver",
   "salary_information",
   "ctc",
   "salary_currency",
   "salary_mode",
+  "salary_cb",
+  "payroll_cost_center",
+  "base",
+  "pension_eligibility",
+  "column_break_mypt",
+  "employee_tin_no",
+  "pension_id",
   "bank_details_section",
   "bank_name",
+  "bank_reference",
   "column_break_heye",
   "bank_ac_no",
   "iban",
+  "earning_deduction",
+  "section_break_smki",
+  "add_default_benefit",
+  "column_break_ogph",
+  "tax_free_transportation_amount",
+  "section_break_xudw",
+  "earnings",
+  "deductions",
+  "conditions_and_formula_variable_and_example",
   "personal_details",
   "marital_status",
   "family_background",
   "column_break6",
   "blood_group",
   "health_details",
+  "health_insurance_section",
+  "health_insurance_provider",
+  "health_insurance_no",
   "passport_details_section",
   "passport_number",
   "valid_upto",
@@ -94,6 +127,11 @@
   "date_of_issue",
   "place_of_issue",
   "profile_tab",
+  "section_break_kghb",
+  "certificate",
+  "column_break_bmkg",
+  "document",
+  "section_break_tchi",
   "bio",
   "educational_qualification",
   "education",
@@ -141,7 +179,7 @@
    "no_copy": 1,
    "oldfieldname": "naming_series",
    "oldfieldtype": "Select",
-   "options": "HR-EMP-",
+   "options": "GHA\nGHN\nGHM\nGHL\nGHP\nGHR",
    "set_only_once": 1
   },
   {
@@ -155,8 +193,7 @@
   {
    "fieldname": "first_name",
    "fieldtype": "Data",
-   "label": "First Name",
-   "reqd": 1
+   "label": "First Name"
   },
   {
    "allow_in_quick_entry": 1,
@@ -182,6 +219,8 @@
    "read_only": 1
   },
   {
+   "fetch_from": "user_id.user_image",
+   "fetch_if_empty": 1,
    "fieldname": "image",
    "fieldtype": "Attach Image",
    "hidden": 1,
@@ -217,6 +256,7 @@
   {
    "fieldname": "employee_number",
    "fieldtype": "Data",
+   "hidden": 1,
    "in_global_search": 1,
    "label": "Employee Number",
    "oldfieldname": "employee_number",
@@ -378,8 +418,6 @@
    "fieldname": "branch",
    "fieldtype": "Link",
    "label": "Branch",
-   "oldfieldname": "branch",
-   "oldfieldtype": "Link",
    "options": "Branch"
   },
   {
@@ -411,10 +449,11 @@
   {
    "depends_on": "eval:doc.salary_mode == 'Bank'",
    "fieldname": "bank_name",
-   "fieldtype": "Data",
+   "fieldtype": "Link",
    "label": "Bank Name",
    "oldfieldname": "bank_name",
-   "oldfieldtype": "Link"
+   "oldfieldtype": "Link",
+   "options": "Bank"
   },
   {
    "depends_on": "eval:doc.salary_mode == 'Bank'",
@@ -507,7 +546,7 @@
    "collapsible": 1,
    "fieldname": "personal_details",
    "fieldtype": "Tab Break",
-   "label": "Personal Details"
+   "label": "Personal"
   },
   {
    "fieldname": "passport_number",
@@ -600,7 +639,7 @@
    "collapsible": 1,
    "fieldname": "exit",
    "fieldtype": "Tab Break",
-   "label": "Employee Exit",
+   "label": "Exit",
    "oldfieldtype": "Section Break"
   },
   {
@@ -815,6 +854,213 @@
    "fieldname": "iban",
    "fieldtype": "Data",
    "label": "IBAN"
+  },
+  {
+   "fieldname": "column_break_mypt",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "base",
+   "fieldtype": "Currency",
+   "label": "Base",
+   "reqd": 1
+  },
+  {
+   "fieldname": "employment_type",
+   "fieldtype": "Link",
+   "ignore_user_permissions": 1,
+   "label": "Employment Type",
+   "options": "Employment Type"
+  },
+  {
+   "fieldname": "grade",
+   "fieldtype": "Link",
+   "label": "Grade",
+   "options": "Employee Grade"
+  },
+  {
+   "fieldname": "job_applicant",
+   "fieldtype": "Link",
+   "label": "Job Applicant",
+   "options": "Job Applicant"
+  },
+  {
+   "fieldname": "default_shift",
+   "fieldtype": "Link",
+   "label": "Default Shift",
+   "options": "Shift Type"
+  },
+  {
+   "fieldname": "approvers_section",
+   "fieldtype": "Section Break",
+   "label": "Approvers"
+  },
+  {
+   "fieldname": "expense_approver",
+   "fieldtype": "Link",
+   "label": "Expense Approver",
+   "options": "User"
+  },
+  {
+   "fieldname": "leave_approver",
+   "fieldtype": "Link",
+   "label": "Leave Approver",
+   "options": "User"
+  },
+  {
+   "fieldname": "column_break_45",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "shift_request_approver",
+   "fieldtype": "Link",
+   "label": "Shift Request Approver",
+   "options": "User"
+  },
+  {
+   "fieldname": "salary_cb",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "department.payroll_cost_center",
+   "fetch_if_empty": 1,
+   "fieldname": "payroll_cost_center",
+   "fieldtype": "Link",
+   "label": "Payroll Cost Center",
+   "options": "Cost Center"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "health_insurance_section",
+   "fieldtype": "Section Break",
+   "label": "Health Insurance"
+  },
+  {
+   "fieldname": "health_insurance_provider",
+   "fieldtype": "Link",
+   "label": "Health Insurance Provider",
+   "options": "Employee Health Insurance"
+  },
+  {
+   "depends_on": "eval:doc.health_insurance_provider",
+   "fieldname": "health_insurance_no",
+   "fieldtype": "Data",
+   "label": "Health Insurance No"
+  },
+  {
+   "description": "Salary breakup based on Earning and Deduction.",
+   "fieldname": "earning_deduction",
+   "fieldtype": "Tab Break",
+   "label": "Earnings & Deductions"
+  },
+  {
+   "fieldname": "earnings",
+   "fieldtype": "Table",
+   "label": "Earnings",
+   "options": "Salary Detail"
+  },
+  {
+   "fieldname": "deductions",
+   "fieldtype": "Table",
+   "label": "Deductions",
+   "options": "Salary Detail"
+  },
+  {
+   "fieldname": "bank_reference",
+   "fieldtype": "Data",
+   "label": "Bank Reference"
+  },
+  {
+   "fieldname": "employee_tin_no",
+   "fieldtype": "Data",
+   "label": "Employee Tin No"
+  },
+  {
+   "fieldname": "pension_id",
+   "fieldtype": "Data",
+   "label": "Pension ID"
+  },
+  {
+   "fieldname": "conditions_and_formula_variable_and_example",
+   "fieldtype": "HTML",
+   "label": "Conditions and Formula variable and example"
+  },
+  {
+   "fieldname": "nationality",
+   "fieldtype": "Link",
+   "label": "Nationality",
+   "options": "Country"
+  },
+  {
+   "fieldname": "tax_free_transportation_amount",
+   "fieldtype": "Select",
+   "label": "Tax Free Transportation Amount",
+   "options": "All Tax\n600\n2200"
+  },
+  {
+   "fetch_from": "branch.branch_region",
+   "fieldname": "branch_region",
+   "fieldtype": "Read Only",
+   "in_global_search": 1,
+   "in_list_view": 1,
+   "label": "Branch Region"
+  },
+  {
+   "fieldname": "section_break_smki",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "add_default_benefit",
+   "fieldtype": "Button",
+   "label": "Add Default Benefits And Deductions"
+  },
+  {
+   "fieldname": "section_break_xudw",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_ogph",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_kghb",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "certificate",
+   "fieldtype": "Attach",
+   "label": "Certificate"
+  },
+  {
+   "fieldname": "section_break_tchi",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "section",
+   "fieldtype": "Link",
+   "label": "Section",
+   "mandatory_depends_on": "\n",
+   "options": "Section"
+  },
+  {
+   "fieldname": "resident_id",
+   "fieldtype": "Attach",
+   "label": "Resident Id"
+  },
+  {
+   "fieldname": "pension_eligibility",
+   "fieldtype": "Select",
+   "label": "Pension Eligibility",
+   "options": "Pension Grant\nOpting Out of Pension"
+  },
+  {
+   "fieldname": "column_break_bmkg",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "document",
+   "fieldtype": "Attach",
+   "label": "Document"
   }
  ],
  "icon": "fa fa-user",
@@ -822,11 +1068,11 @@
  "image_field": "image",
  "is_tree": 1,
  "links": [],
- "modified": "2025-07-04 08:29:34.347269",
+ "modified": "2025-09-24 10:25:53.425702",
  "modified_by": "Administrator",
  "module": "Setup",
  "name": "Employee",
- "naming_rule": "By \"Naming Series\" field",
+ "naming_rule": "By script",
  "nsm_parent_field": "reports_to",
  "owner": "Administrator",
  "permissions": [
@@ -869,6 +1115,5 @@
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
- "title_field": "employee_name",
- "track_changes": 1
+ "title_field": "employee_name"
 }

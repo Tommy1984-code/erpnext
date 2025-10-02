@@ -9,6 +9,7 @@
  "field_order": [
   "department_name",
   "parent_department",
+  "branch",
   "column_break_3",
   "company",
   "is_group",
@@ -84,13 +85,19 @@
   {
    "fieldname": "column_break_3",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "branch",
+   "fieldtype": "Link",
+   "label": "Branch",
+   "options": "Branch"
   }
  ],
  "icon": "fa fa-sitemap",
  "idx": 1,
  "is_tree": 1,
  "links": [],
- "modified": "2024-06-12 16:10:31.451257",
+ "modified": "2025-06-23 11:21:56.417316",
  "modified_by": "Administrator",
  "module": "Setup",
  "name": "Department",

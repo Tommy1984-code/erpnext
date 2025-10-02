@@ -11,8 +11,11 @@ from frappe.permissions import (
 )
 from frappe.utils import cstr, getdate, today, validate_email_address
 from frappe.utils.nestedset import NestedSet
+from hrms.payroll.utils import sanitize_expression
 
 from erpnext.utilities.transaction_base import delete_events
+from frappe.model.naming import make_autoname
+
 
 
 class EmployeeUserDisabledError(frappe.ValidationError):
@@ -29,11 +32,29 @@ class Employee(NestedSet):
 	def autoname(self):
 		set_name_by_naming_series(self)
 		self.employee = self.name
+		
+		
+		
+
+		
+	# adding for the data import for protecting the exsting recodrd
+
+	def before_save(self):
+		if frappe.flags.in_import:
+			self.merge_salary_details()
+		
+	def before_validate(self):
+		self.sanitize_condition_and_formula_fields()
+
+	def before_update_after_submit(self):
+		self.sanitize_condition_and_formula_fields()
+	
 
 	def validate(self):
 		from erpnext.controllers.status_updater import validate_status
 
 		validate_status(self.status, ["Active", "Inactive", "Suspended", "Left"])
+		self.validate_formula_setup()
 
 		self.employee = self.name
 		self.set_employee_name()
@@ -41,7 +62,6 @@ class Employee(NestedSet):
 		self.validate_email()
 		self.validate_status()
 		self.validate_reports_to()
-		self.set_preferred_email()
 		self.validate_preferred_email()
 
 		if self.user_id:
@@ -54,6 +74,10 @@ class Employee(NestedSet):
 				user.save(ignore_permissions=True)
 				remove_user_permission("Employee", self.name, existing_user_id)
 
+		if self.employee_tin_no and (not self.employee_tin_no.isdigit() or len(self.employee_tin_no) != 10):
+			frappe.throw(_("Employee TIN Number must be exactly 10 digits."))
+
+
 	def after_rename(self, old, new, merge):
 		self.db_set("employee", new)
 
@@ -64,12 +88,14 @@ class Employee(NestedSet):
 
 	def validate_user_details(self):
 		if self.user_id:
-			data = frappe.db.get_value("User", self.user_id, ["enabled"], as_dict=1)
+			data = frappe.db.get_value("User", self.user_id, ["enabled", "user_image"], as_dict=1)
 
 			if not data:
 				self.user_id = None
 				return
 
+			if data.get("user_image") and self.image == "":
+				self.image = data.get("user_image")
 			self.validate_for_enabled_user_id(data.get("enabled", 0))
 			self.validate_duplicate_user_id()
 
@@ -78,16 +104,14 @@ class Employee(NestedSet):
 
 	def on_update(self):
 		self.update_nsm_model()
-		frappe.clear_cache()
 		if self.user_id:
 			self.update_user()
 			self.update_user_permissions()
 		self.reset_employee_emails_cache()
 
 	def update_user_permissions(self):
-		if not self.has_value_changed("user_id") and not self.has_value_changed("create_user_permission"):
+		if not self.create_user_permission:
 			return
-
 		if not has_permission("User Permission", ptype="write", raise_exception=False):
 			return
 
@@ -95,12 +119,11 @@ class Employee(NestedSet):
 			"User Permission", {"allow": "Employee", "for_value": self.name, "user": self.user_id}
 		)
 
-		if employee_user_permission_exists and not self.create_user_permission:
-			remove_user_permission("Employee", self.name, self.user_id)
-			remove_user_permission("Company", self.company, self.user_id)
-		elif not employee_user_permission_exists and self.create_user_permission:
-			add_user_permission("Employee", self.name, self.user_id)
-			add_user_permission("Company", self.company, self.user_id)
+		if employee_user_permission_exists:
+			return
+
+		add_user_permission("Employee", self.name, self.user_id)
+		add_user_permission("Company", self.company, self.user_id)
 
 	def update_user(self):
 		# add employee role if missing
@@ -162,7 +185,9 @@ class Employee(NestedSet):
 
 	def set_preferred_email(self):
 		preferred_email_field = frappe.scrub(self.prefered_contact_email)
-		self.prefered_email = self.get(preferred_email_field) if preferred_email_field else None
+		if preferred_email_field:
+			preferred_email = self.get(preferred_email_field)
+			self.prefered_email = preferred_email
 
 	def validate_status(self):
 		if self.status == "Left":
@@ -211,6 +236,32 @@ class Employee(NestedSet):
 				_("User {0} is already assigned to Employee {1}").format(self.user_id, employee[0][0]),
 				frappe.DuplicateEntryError,
 			)
+	#my code i added to validate formula and condition
+	def validate_formula_setup(self):
+		for table in ["earnings", "deductions"]:
+			for row in self.get(table):
+				if not row.amount_based_on_formula and row.formula:
+					frappe.msgprint(
+						_(
+							"{0} Row #{1}: Formula is set but {2} is disabled for the Salary Component {3}."
+						).format(
+							table.capitalize(),
+							row.idx,
+							frappe.bold(_("Amount Based on Formula")),
+							frappe.bold(row.salary_component),
+						),
+						title=_("Warning"),
+						indicator="orange",
+					)
+
+	def sanitize_condition_and_formula_fields(self):
+			
+		for table in ("earnings", "deductions"):
+			for row in self.get(table):
+				row.condition = row.condition.strip() if row.condition else ""
+				row.formula = row.formula.strip() if row.formula else ""
+				row._condition, row.condition = row.condition, sanitize_expression(row.condition)
+				row._formula, row.formula = row.formula, sanitize_expression(row.formula)
 
 	def validate_reports_to(self):
 		if self.reports_to == self.name:
@@ -231,6 +282,95 @@ class Employee(NestedSet):
 		if cell_number != prev_number or self.get("user_id") != prev_doc.get("user_id"):
 			frappe.cache().hdel("employees_with_number", cell_number)
 			frappe.cache().hdel("employees_with_number", prev_number)
+
+	# My added code for data import tool not to override the existing one
+	def merge_salary_details(self):
+		if not self.name:
+			return
+
+		try:
+			existing = frappe.get_doc("Employee", self.name)
+		except frappe.DoesNotExistError:
+			return
+
+		# List of fields from Salary Component doctype (exactly as you provided)
+		salary_component_fields = [
+			"salary_component",
+			"salary_component_abbr",
+			"type",
+			"description",
+			"depends_on_payment_days",
+			"is_tax_applicable",
+			"deduct_full_tax_on_selected_payroll_date",
+			"variable_based_on_taxable_salary",
+			"is_income_tax_component",
+			"exempted_from_income_tax",
+			"round_to_the_nearest_integer",
+			"statistical_component",
+			"do_not_include_in_total",
+			"remove_if_zero_valued",
+			"disabled",
+			"loan_component",
+			"default_component",
+			"condition",
+			"amount_based_on_formula",
+			"formula",
+			"amount",
+			"round_to_the_nearest_integer",
+		]
+
+		# Child table only fields (adjust if needed)
+		child_only_fields = ["prorate", "payment_type", "amount"]
+
+		def merge_table(table_name):
+			existing_rows = {row.salary_component: row for row in getattr(existing, table_name)}
+			imported_rows = {row.salary_component: row for row in getattr(self, table_name)}
+
+			final_rows = []
+
+			# Keep existing that are not overwritten by import
+			for comp, row in existing_rows.items():
+				if comp not in imported_rows:
+					final_rows.append(row)
+
+			# For imported rows, fetch Salary Component fields and merge with child-only fields from import
+			for comp, row in imported_rows.items():
+				# Fetch salary component fields from Salary Component doctype
+				sc_data = frappe.get_all("Salary Component",
+					filters={"salary_component": comp},
+					fields=salary_component_fields,
+					limit=1
+				)
+				sc_dict = sc_data[0] if sc_data else {}
+
+				# Build new dict with Salary Component fields (sc_dict) + child table fields (row)
+				new_row = {}
+
+				# Add all fields from Salary Component, mapping abbr correctly
+				for f in salary_component_fields:
+					value = sc_dict.get(f)
+					if f == "salary_component_abbr":
+						new_row["abbr"] = value  # map to correct field in child table
+					else:
+						new_row[f] = value
+
+				# Override child-only fields from imported row
+				for f in child_only_fields:
+					new_row[f] = getattr(row, f, None)
+
+				final_rows.append(frappe._dict(new_row))
+
+			# Clear and re-append
+			self.set(table_name, [])
+			for row in final_rows:
+				self.append(table_name, row)
+
+		merge_table("earnings")
+		merge_table("deductions")
+
+	# My code added
+	def get_abbr_for_component(self, component):
+		return frappe.db.get_value("Salary Component", component, "abbr") or component[:3].upper()
 
 
 def validate_employee_role(doc, method=None, ignore_emp_check=False):
@@ -437,3 +577,74 @@ def has_upload_permission(doc, ptype="read", user=None):
 	if get_doc_permissions(doc, user=user, ptype=ptype).get(ptype):
 		return True
 	return doc.user_id == user
+#my Code to filter out the components
+@frappe.whitelist()
+def get_salary_component(doctype, txt, searchfield, start, page_len, filters):
+	sc = frappe.qb.DocType("Salary Component")
+	sca = frappe.qb.DocType("Salary Component Account")
+
+	salary_components = (
+		frappe.qb.from_(sc)
+		.left_join(sca)
+		.on(sca.parent == sc.name)
+		.select(sc.name, sca.account, sca.company)
+		.where(
+			(sc.type == filters.get("component_type"))
+			& (sc.disabled == 0)
+			& (sc[searchfield].like(f"%{txt}%") | sc.name.like(f"%{txt}%"))
+		)
+		.limit(page_len)
+		.offset(start)
+	).run(as_dict=True)
+
+	accounts = []
+	for component in salary_components:
+		if not component.company:
+			accounts.append((component.name, component.account, component.company))
+		else:
+			if component.company == filters["company"]:
+				accounts.append((component.name, component.account, component.company))
+
+	return accounts
+
+#my code 
+@frappe.whitelist()
+def get_default_salary_components():
+    fields = [
+        "name",
+        "salary_component",
+        "salary_component_abbr",
+        "type",
+        "description",
+        "depends_on_payment_days",
+        "is_tax_applicable",
+        "deduct_full_tax_on_selected_payroll_date",
+        "variable_based_on_taxable_salary",
+        "is_income_tax_component",
+        "exempted_from_income_tax",
+        "round_to_the_nearest_integer",
+        "statistical_component",
+        "do_not_include_in_total",
+        "remove_if_zero_valued",
+        "disabled",
+        "loan_component",
+        "default_component",
+        "condition",
+        "amount_based_on_formula",
+        "formula",
+        "amount",
+        "round_to_the_nearest_integer",
+        
+    ]
+
+    earnings = frappe.get_all(
+        "Salary Component",
+        filters={"type": "Earning", "default_component": 1, "disabled": 0},
+        fields=fields,
+    )
+    deductions = frappe.get_all(
+        "Salary Component",
+        filters={"type": "Deduction", "default_component": 1, "disabled": 0},
+        fields=fields,
+    )
+    return {"earnings": earnings, "deductions": deductions}
