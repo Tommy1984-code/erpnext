@@ -15,7 +15,7 @@
  "icon": "accounting",
  "idx": 0,
  "indicator_color": "",
- "is_hidden": 0,
+ "is_hidden": 1,
  "label": "Accounting",
  "links": [
   {
@@ -586,7 +586,7 @@
    "type": "Link"
   }
  ],
- "modified": "2024-01-18 22:15:40.941711",
+ "modified": "2025-10-02 13:09:48.251446",
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Accounting",
@@ -621,7 +621,7 @@
    "doc_view": "List",
    "label": "Learn Accounting",
    "type": "URL",
-   "url": "https://school.frappe.io/lms/courses/erpnext-accounting?utm_source=in_app"
+   "url": "https://frappe.school/courses/erpnext-accounting?utm_source=in_app"
   },
   {
    "label": "Chart of Accounts",
@@ -651,16 +651,19 @@
   {
    "label": "Accounts Receivable",
    "link_to": "Accounts Receivable",
+   "report_ref_doctype": "Sales Invoice",
    "type": "Report"
   },
   {
    "label": "General Ledger",
    "link_to": "General Ledger",
+   "report_ref_doctype": "GL Entry",
    "type": "Report"
   },
   {
    "label": "Trial Balance",
    "link_to": "Trial Balance",
+   "report_ref_doctype": "GL Entry",
    "type": "Report"
   },
   {

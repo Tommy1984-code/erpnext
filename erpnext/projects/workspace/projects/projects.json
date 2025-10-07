@@ -14,7 +14,7 @@
  "hide_custom": 0,
  "icon": "project",
  "idx": 0,
- "is_hidden": 0,
+ "is_hidden": 1,
  "label": "Projects",
  "links": [
   {
@@ -192,7 +192,7 @@
    "type": "Link"
   }
  ],
- "modified": "2023-07-04 14:39:08.935853",
+ "modified": "2025-10-02 13:10:14.310126",
  "modified_by": "Administrator",
  "module": "Projects",
  "name": "Projects",
@@ -210,7 +210,7 @@
    "doc_view": "List",
    "label": "Learn Project Management",
    "type": "URL",
-   "url": "https://school.frappe.io/lms/courses/project-management?utm_source=in_app"
+   "url": "https://frappe.school/courses/project-management?utm_source=in_app"
   },
   {
    "color": "Blue",
@@ -236,6 +236,7 @@
   {
    "label": "Project Billing Summary",
    "link_to": "Project Billing Summary",
+   "report_ref_doctype": "Timesheet",
    "type": "Report"
   },
   {

@@ -14,7 +14,7 @@
  "hide_custom": 0,
  "icon": "sell",
  "idx": 0,
- "is_hidden": 0,
+ "is_hidden": 1,
  "label": "Selling",
  "links": [
   {
@@ -621,7 +621,7 @@
    "type": "Link"
   }
  ],
- "modified": "2023-07-04 14:35:58.204465",
+ "modified": "2025-10-02 13:09:59.574344",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Selling",
@@ -639,7 +639,7 @@
    "doc_view": "List",
    "label": "Learn Sales Management",
    "type": "URL",
-   "url": "https://school.frappe.io/lms/courses/sales-management-course?utm_source=in_app"
+   "url": "https://frappe.school/courses/sales-management-course?utm_source=in_app"
   },
   {
    "label": "Point of Sale",
@@ -667,6 +667,7 @@
    "format": "{} Open",
    "label": "Sales Analytics",
    "link_to": "Sales Analytics",
+   "report_ref_doctype": "Sales Order",
    "stats_filter": "{ \"Status\": \"Open\" }",
    "type": "Report"
   },
@@ -676,6 +677,5 @@
    "type": "Dashboard"
   }
  ],
- "title": "Selling",
- "type": "Workspace"
+ "title": "Selling"
 }

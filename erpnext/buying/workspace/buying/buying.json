@@ -14,7 +14,7 @@
  "hide_custom": 0,
  "icon": "buying",
  "idx": 0,
- "is_hidden": 0,
+ "is_hidden": 1,
  "label": "Buying",
  "links": [
   {
@@ -511,7 +511,7 @@
    "type": "Link"
   }
  ],
- "modified": "2023-07-04 14:43:30.387683",
+ "modified": "2025-10-02 13:09:56.744825",
  "modified_by": "Administrator",
  "module": "Buying",
  "name": "Buying",
@@ -537,7 +537,7 @@
    "doc_view": "List",
    "label": "Learn Procurement",
    "type": "URL",
-   "url": "https://school.frappe.io/lms/courses/procurement?utm_source=in_app"
+   "url": "https://frappe.school/courses/procurement?utm_source=in_app"
   },
   {
    "color": "Yellow",
@@ -558,11 +558,13 @@
   {
    "label": "Purchase Analytics",
    "link_to": "Purchase Analytics",
+   "report_ref_doctype": "Purchase Order",
    "type": "Report"
   },
   {
    "label": "Purchase Order Analysis",
    "link_to": "Purchase Order Analysis",
+   "report_ref_doctype": "Purchase Order",
    "type": "Report"
   },
   {
