@@ -666,3 +666,16 @@ default_log_clearing_doctypes = {
 export_python_type_annotations = True
 
 fields_for_group_similar_items = ["qty", "amount"]
+
+
+#my code 
+doc_events = {
+    "Employee": {
+        "on_update": [
+            "hrms.payroll.doctype.penalty_management.penalty_utils.update_employee_penalties",
+            "hrms.payroll.doctype.loan_management.loan_utils.update_employee_loans",
+            "hrms.payroll.doctype.credit_association_contribution.credit_association_utils.update_employee_credit_association"
+        ]
+    }
+}
+

@@ -191,7 +191,7 @@
  "idx": 1,
  "is_tree": 1,
  "links": [],
- "modified": "2024-08-19 15:19:11.095045",
+ "modified": "2025-10-07 15:24:25.318224",
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Account",
@@ -244,8 +244,21 @@
    "role": "Accounts Manager",
    "share": 1,
    "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "HR And Payroll",
+   "share": 1,
+   "write": 1
   }
  ],
+ "row_format": "Dynamic",
  "search_fields": "account_number",
  "show_name_in_global_search": 1,
  "sort_field": "modified",
