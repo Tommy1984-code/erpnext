@@ -1,0 +1,66 @@
+{
+ "actions": [],
+ "allow_import": 1,
+ "allow_rename": 1,
+ "autoname": "field:branch_name",
+ "creation": "2013-01-10 16:34:13",
+ "doctype": "DocType",
+ "document_type": "Setup",
+ "engine": "InnoDB",
+ "field_order": [
+  "branch_name",
+  "branch_region"
+ ],
+ "fields": [
+  {
+   "fieldname": "branch_region",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Branch Region",
+   "options": "\nAddis Ababa\nOromia Region\nAmhara Region\nTigray Region\nSidama Region\nDire Dawa\nCentral Ethiopia Regional State"
+  },
+  {
+   "fieldname": "branch_name",
+   "fieldtype": "Data",
+   "label": "Branch Name",
+   "unique": 1
+  }
+ ],
+ "icon": "fa fa-code-fork",
+ "idx": 1,
+ "links": [],
+ "modified": "2025-07-28 15:46:16.628939",
+ "modified_by": "Administrator",
+ "module": "Setup",
+ "name": "Branch",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "HR User",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "HR Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
