@@ -674,7 +674,8 @@ doc_events = {
         "on_update": [
             "hrms.payroll.doctype.penalty_management.penalty_utils.update_employee_penalties",
             "hrms.payroll.doctype.loan_management.loan_utils.update_employee_loans",
-            "hrms.payroll.doctype.credit_association_contribution.credit_association_utils.update_employee_credit_association"
+            "hrms.payroll.doctype.credit_association_contribution.credit_association_utils.update_employee_credit_association",
+            "hrms.payroll.doctype.benefit_management.benefit_utils.update_employee_benefits"
         ]
     }
 }

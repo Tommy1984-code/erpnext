@@ -296,7 +296,7 @@
   {
    "bold": 1,
    "fieldname": "emergency_phone_number",
-   "fieldtype": "Data",
+   "fieldtype": "Phone",
    "label": "Emergency Phone",
    "options": "Phone"
   },
@@ -470,8 +470,9 @@
    "label": "Address & Contacts"
   },
   {
+   "default": "Ethiopia",
    "fieldname": "cell_number",
-   "fieldtype": "Data",
+   "fieldtype": "Phone",
    "label": "Mobile",
    "options": "Phone"
   },
@@ -1068,7 +1069,7 @@
  "image_field": "image",
  "is_tree": 1,
  "links": [],
- "modified": "2025-10-07 15:00:09.232147",
+ "modified": "2025-10-30 10:35:39.854208",
  "modified_by": "Administrator",
  "module": "Setup",
  "name": "Employee",
