@@ -139,6 +139,38 @@
   "external_work_history",
   "history_in_company",
   "internal_work_history",
+  "tab_11_tab",
+  "section_break_zbpb",
+  "employment_application_form",
+  "forensic_request_and_result_letter",
+  "pension_id_card",
+  "pre_employment_offer_letter",
+  "guarantor_id",
+  "pension_form",
+  "probation_period_progress_report",
+  "service_commitment_form",
+  "column_break_cczd",
+  "assessment_report_form",
+  "life_history_form",
+  "cost_sharing_form",
+  "letter_from_the_guarantor_employer",
+  "guarantor_marriage_certificateunmarried_certificate",
+  "probation_period_employment_letter",
+  "probation_period_evaluation_form",
+  "employee_resignation_letter",
+  "column_break_kbib",
+  "medical_examination_request_and_result_letter",
+  "tax_registration_card",
+  "driving_license_document",
+  "guarantors_ownership_entitlement_document",
+  "permanent_employment_letter",
+  "termination_letter",
+  "exit_interview_document",
+  "signed_and_completed_clearance_form",
+  "section_break_vudi",
+  "cv",
+  "section_break_wyqe",
+  "educational_documents",
   "exit",
   "resignation_letter_date",
   "relieving_date",
@@ -1062,6 +1094,163 @@
    "fieldname": "document",
    "fieldtype": "Attach",
    "label": "Document"
+  },
+  {
+   "fieldname": "tab_11_tab",
+   "fieldtype": "Tab Break",
+   "label": "Personal Files"
+  },
+  {
+   "fieldname": "cv",
+   "fieldtype": "Table",
+   "label": "Cv with Cover letter",
+   "options": "Document Attachment"
+  },
+  {
+   "fieldname": "section_break_zbpb",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "employment_application_form",
+   "fieldtype": "Attach",
+   "label": "Company's Employment Application Form"
+  },
+  {
+   "fieldname": "column_break_cczd",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "assessment_report_form",
+   "fieldtype": "Attach",
+   "label": "Employment Interview/Assessment Report Form"
+  },
+  {
+   "fieldname": "section_break_vudi",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_kbib",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "medical_examination_request_and_result_letter",
+   "fieldtype": "Attach",
+   "label": "Medical Examination Request And Result Letter"
+  },
+  {
+   "fieldname": "forensic_request_and_result_letter",
+   "fieldtype": "Attach",
+   "label": "Forensic Request And Result Letter"
+  },
+  {
+   "fieldname": "life_history_form",
+   "fieldtype": "Attach",
+   "label": "Life History Form"
+  },
+  {
+   "fieldname": "tax_registration_card",
+   "fieldtype": "Attach",
+   "label": "Tax Registration Card -Tin"
+  },
+  {
+   "fieldname": "pension_id_card",
+   "fieldtype": "Attach",
+   "label": "Pension Id Card"
+  },
+  {
+   "fieldname": "cost_sharing_form",
+   "fieldtype": "Attach",
+   "label": "Cost Sharing Form"
+  },
+  {
+   "fieldname": "driving_license_document",
+   "fieldtype": "Attach",
+   "label": "Driving License Document"
+  },
+  {
+   "fieldname": "pre_employment_offer_letter",
+   "fieldtype": "Attach",
+   "label": "Pre-Employment Offer Letter"
+  },
+  {
+   "fieldname": "letter_from_the_guarantor_employer",
+   "fieldtype": "Attach",
+   "label": "Letter From The Guarantor Employer"
+  },
+  {
+   "fieldname": "guarantor_id",
+   "fieldtype": "Attach",
+   "label": "Guarantor Id"
+  },
+  {
+   "fieldname": "guarantor_marriage_certificateunmarried_certificate",
+   "fieldtype": "Attach",
+   "label": "Guarantor Marriage Certificate/Unmarried Certificate"
+  },
+  {
+   "fieldname": "guarantors_ownership_entitlement_document",
+   "fieldtype": "Attach",
+   "label": "Guarantor's Ownership entitlement Document"
+  },
+  {
+   "fieldname": "pension_form",
+   "fieldtype": "Attach",
+   "label": "Pension Form"
+  },
+  {
+   "fieldname": "probation_period_employment_letter",
+   "fieldtype": "Attach",
+   "label": "Probation Period Employment Letter"
+  },
+  {
+   "fieldname": "probation_period_progress_report",
+   "fieldtype": "Attach",
+   "label": "Probation Period Progress Report"
+  },
+  {
+   "fieldname": "probation_period_evaluation_form",
+   "fieldtype": "Attach",
+   "label": "Probation Period Evaluation Form"
+  },
+  {
+   "fieldname": "permanent_employment_letter",
+   "fieldtype": "Attach",
+   "label": "Permanent Employment Letter"
+  },
+  {
+   "fieldname": "service_commitment_form",
+   "fieldtype": "Attach",
+   "label": "Service Commitment Form"
+  },
+  {
+   "fieldname": "employee_resignation_letter",
+   "fieldtype": "Attach",
+   "label": "Employee Resignation Letter"
+  },
+  {
+   "fieldname": "termination_letter",
+   "fieldtype": "Attach",
+   "label": "Termination Letter"
+  },
+  {
+   "fieldname": "exit_interview_document",
+   "fieldtype": "Attach",
+   "label": "Exit Interview Document"
+  },
+  {
+   "fieldname": "signed_and_completed_clearance_form",
+   "fieldtype": "Attach",
+   "label": "Signed And Completed Clearance Form"
+  },
+  {
+   "fieldname": "section_break_wyqe",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "educational_documents",
+   "fieldtype": "Table",
+   "label": "Educational/Experience/Training Documents",
+   "options": "Document Attachment"
   }
  ],
  "icon": "fa fa-user",
@@ -1069,7 +1258,7 @@
  "image_field": "image",
  "is_tree": 1,
  "links": [],
- "modified": "2025-10-30 10:35:39.854208",
+ "modified": "2025-11-19 11:03:48.959996",
  "modified_by": "Administrator",
  "module": "Setup",
  "name": "Employee",
