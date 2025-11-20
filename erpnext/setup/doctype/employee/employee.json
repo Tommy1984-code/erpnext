@@ -169,8 +169,18 @@
   "signed_and_completed_clearance_form",
   "section_break_vudi",
   "cv",
-  "section_break_wyqe",
+  "performance_appraisal_form",
+  "salary_increment",
+  "warning_and_fine_letter",
+  "column_break_qwdu",
   "educational_documents",
+  "guarantor_confirmation_form",
+  "cash_loan_agreement",
+  "experience_and_recommendation_letters",
+  "column_break_sple",
+  "job_description",
+  "promotion_letter",
+  "special_assignment_letter",
   "exit",
   "resignation_letter_date",
   "relieving_date",
@@ -1243,13 +1253,71 @@
    "label": "Signed And Completed Clearance Form"
   },
   {
-   "fieldname": "section_break_wyqe",
-   "fieldtype": "Section Break"
-  },
-  {
    "fieldname": "educational_documents",
    "fieldtype": "Table",
    "label": "Educational/Experience/Training Documents",
+   "options": "Document Attachment"
+  },
+  {
+   "fieldname": "column_break_qwdu",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "guarantor_confirmation_form",
+   "fieldtype": "Table",
+   "label": "Guarantor Confirmation Form",
+   "options": "Document Attachment"
+  },
+  {
+   "fieldname": "column_break_sple",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "job_description",
+   "fieldtype": "Table",
+   "label": "Job Description",
+   "options": "Document Attachment"
+  },
+  {
+   "fieldname": "performance_appraisal_form",
+   "fieldtype": "Table",
+   "label": "Performance Appraisal Form",
+   "options": "Document Attachment"
+  },
+  {
+   "fieldname": "promotion_letter",
+   "fieldtype": "Table",
+   "label": "Promotion Letter",
+   "options": "Document Attachment"
+  },
+  {
+   "fieldname": "salary_increment",
+   "fieldtype": "Table",
+   "label": "Salary Increment",
+   "options": "Document Attachment"
+  },
+  {
+   "fieldname": "cash_loan_agreement",
+   "fieldtype": "Table",
+   "label": "Cash Loan Agreement",
+   "options": "Document Attachment"
+  },
+  {
+   "fieldname": "special_assignment_letter",
+   "fieldtype": "Table",
+   "label": "Special Assignment Letter",
+   "options": "Document Attachment"
+  },
+  {
+   "fieldname": "warning_and_fine_letter",
+   "fieldtype": "Table",
+   "label": "Warning And Fine Letter",
+   "options": "Document Attachment"
+  },
+  {
+   "fieldname": "experience_and_recommendation_letters",
+   "fieldtype": "Table",
+   "label": "Experience And Recommendation Letters",
    "options": "Document Attachment"
   }
  ],
@@ -1258,7 +1326,7 @@
  "image_field": "image",
  "is_tree": 1,
  "links": [],
- "modified": "2025-11-19 11:03:48.959996",
+ "modified": "2025-11-20 09:13:51.959953",
  "modified_by": "Administrator",
  "module": "Setup",
  "name": "Employee",
