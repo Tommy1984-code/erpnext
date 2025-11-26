@@ -459,6 +459,7 @@ frappe.ui.form.on("Salary Detail", {
 
 
 frappe.ui.form.on("Employee", {
+	
     company: function(frm) {
         set_girum_naming_series(frm);
     },

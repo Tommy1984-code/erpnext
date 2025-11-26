@@ -34,7 +34,6 @@
   "company_details_section",
   "company",
   "department",
-  "employment_type",
   "employee_number",
   "column_break_25",
   "designation",
@@ -43,9 +42,7 @@
   "column_break_18",
   "branch",
   "branch_region",
-  "grade",
   "employment_details",
-  "job_applicant",
   "scheduled_confirmation_date",
   "column_break_32",
   "final_confirmation_date",
@@ -56,6 +53,7 @@
   "contact_details",
   "cell_number",
   "resident_id",
+  "national_id",
   "column_break_40",
   "personal_email",
   "company_email",
@@ -79,18 +77,10 @@
   "attendance_device_id",
   "column_break_44",
   "holiday_list",
-  "default_shift",
-  "approvers_section",
-  "expense_approver",
-  "leave_approver",
-  "column_break_45",
-  "shift_request_approver",
   "salary_information",
   "ctc",
   "salary_currency",
   "salary_mode",
-  "salary_cb",
-  "payroll_cost_center",
   "base",
   "pension_eligibility",
   "column_break_mypt",
@@ -117,9 +107,6 @@
   "column_break6",
   "blood_group",
   "health_details",
-  "health_insurance_section",
-  "health_insurance_provider",
-  "health_insurance_no",
   "passport_details_section",
   "passport_number",
   "valid_upto",
@@ -909,88 +896,6 @@
    "reqd": 1
   },
   {
-   "fieldname": "employment_type",
-   "fieldtype": "Link",
-   "ignore_user_permissions": 1,
-   "label": "Employment Type",
-   "options": "Employment Type"
-  },
-  {
-   "fieldname": "grade",
-   "fieldtype": "Link",
-   "label": "Grade",
-   "options": "Employee Grade"
-  },
-  {
-   "fieldname": "job_applicant",
-   "fieldtype": "Link",
-   "label": "Job Applicant",
-   "options": "Job Applicant"
-  },
-  {
-   "fieldname": "default_shift",
-   "fieldtype": "Link",
-   "label": "Default Shift",
-   "options": "Shift Type"
-  },
-  {
-   "fieldname": "approvers_section",
-   "fieldtype": "Section Break",
-   "label": "Approvers"
-  },
-  {
-   "fieldname": "expense_approver",
-   "fieldtype": "Link",
-   "label": "Expense Approver",
-   "options": "User"
-  },
-  {
-   "fieldname": "leave_approver",
-   "fieldtype": "Link",
-   "label": "Leave Approver",
-   "options": "User"
-  },
-  {
-   "fieldname": "column_break_45",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "shift_request_approver",
-   "fieldtype": "Link",
-   "label": "Shift Request Approver",
-   "options": "User"
-  },
-  {
-   "fieldname": "salary_cb",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fetch_from": "department.payroll_cost_center",
-   "fetch_if_empty": 1,
-   "fieldname": "payroll_cost_center",
-   "fieldtype": "Link",
-   "label": "Payroll Cost Center",
-   "options": "Cost Center"
-  },
-  {
-   "collapsible": 1,
-   "fieldname": "health_insurance_section",
-   "fieldtype": "Section Break",
-   "label": "Health Insurance"
-  },
-  {
-   "fieldname": "health_insurance_provider",
-   "fieldtype": "Link",
-   "label": "Health Insurance Provider",
-   "options": "Employee Health Insurance"
-  },
-  {
-   "depends_on": "eval:doc.health_insurance_provider",
-   "fieldname": "health_insurance_no",
-   "fieldtype": "Data",
-   "label": "Health Insurance No"
-  },
-  {
    "description": "Salary breakup based on Earning and Deduction.",
    "fieldname": "earning_deduction",
    "fieldtype": "Tab Break",
@@ -1319,6 +1224,11 @@
    "fieldtype": "Table",
    "label": "Experience And Recommendation Letters",
    "options": "Document Attachment"
+  },
+  {
+   "fieldname": "national_id",
+   "fieldtype": "Attach",
+   "label": "National ID"
   }
  ],
  "icon": "fa fa-user",
@@ -1326,7 +1236,7 @@
  "image_field": "image",
  "is_tree": 1,
  "links": [],
- "modified": "2025-11-20 09:13:51.959953",
+ "modified": "2025-11-26 08:38:28.477791",
  "modified_by": "Administrator",
  "module": "Setup",
  "name": "Employee",

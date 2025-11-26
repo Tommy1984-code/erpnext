@@ -32,11 +32,7 @@ class Employee(NestedSet):
 	def autoname(self):
 		set_name_by_naming_series(self)
 		self.employee = self.name
-		
-		
-		
-
-		
+			
 	# adding for the data import for protecting the exsting recodrd
 
 	def before_save(self):
