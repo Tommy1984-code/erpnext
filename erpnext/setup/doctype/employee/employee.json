@@ -499,11 +499,9 @@
    "label": "Address & Contacts"
   },
   {
-   "default": "Ethiopia",
    "fieldname": "cell_number",
-   "fieldtype": "Phone",
-   "label": "Mobile",
-   "options": "Phone"
+   "fieldtype": "Data",
+   "label": "Mobile"
   },
   {
    "fieldname": "prefered_contact_email",
@@ -1236,7 +1234,7 @@
  "image_field": "image",
  "is_tree": 1,
  "links": [],
- "modified": "2025-11-26 08:38:28.477791",
+ "modified": "2025-11-26 09:10:20.123718",
  "modified_by": "Administrator",
  "module": "Setup",
  "name": "Employee",
